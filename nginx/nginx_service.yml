@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-frontend
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      nodePort: 30008 
+    - name: https
+      protocol: TCP
+      port: 443
+      nodePort: 30009
+
+  selector:
+    app: ft-services
+
+
+    # ports:
+    #   - name: http
+    #     protocol: TCP
+    #     port: 80
+    #     targetPort: 9376
+    #   - name: https
+    #     protocol: TCP
+    #     port: 443
+    #     targetPort: 9377
