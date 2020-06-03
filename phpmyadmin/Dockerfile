@@ -20,5 +20,4 @@ RUN cd /usr/share/webapps/ &&\
 	mv phpMyAdmin-4.9.5-english phpmyadmin
 RUN chmod -R 777 /usr/share/webapps/
 
-
 # expose port
