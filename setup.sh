@@ -9,6 +9,8 @@ echo "***Create k8s deployment & service***"
 kubectl create -f nginx/nginx_deployment.yml
 kubectl create -f nginx/nginx_service.yml
 
+kubectl get pods
+
 # docker desktop ip
 # 192.168.1.104
 

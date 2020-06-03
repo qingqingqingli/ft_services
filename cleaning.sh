@@ -11,6 +11,6 @@ kubectl delete -f nginx/nginx_service.yml
 
 # remove all images
 echo "Remove docker images"
-docker image prune -a --force --filter "until=0.5m"
+docker image prune -a --force
 
 echo "Cleaning finishes!"

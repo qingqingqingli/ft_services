@@ -7,8 +7,8 @@ LABEL maintainer="qli"
 # update the repo
 RUN apk update
 
-# install nginx
-RUN apk add nginx openssl
+# install nginx openssl
+RUN apk add nginx openssl && rm -f /var/cache/apk/*
 
 # create user & give access
 RUN adduser -D -g 'www' www
@@ -36,6 +36,6 @@ COPY srcs/nginx.conf /etc/nginx/
 EXPOSE 80 443
 
 # start nginx
-RUN mkdir /run/nginx/
+RUN mkdir -p /run/nginx/
 CMD ["nginx", "-g", "daemon off;"]
 
