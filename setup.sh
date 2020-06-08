@@ -1,13 +1,27 @@
 #!/bin/bash
 
-echo "Process starts!"
+# Reset
+Color_Off='\033[0m'       # Text Reset
 
-echo "***Build Docker Image***"
+# Regular Colors
+Black='\033[0;30m'        # Black
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+Yellow='\033[0;33m'       # Yellow
+Blue='\033[0;34m'         # Blue
+Purple='\033[0;35m'       # Purple
+Cyan='\033[0;36m'         # Cyan
+White='\033[0;37m'        # White
+
+echo -e "$Purple Process starts!\n$Color_Off"
+
+echo -e "$Purple Build Docker Image\n$Color_Off"
 docker build -t nginx nginx/
 
-echo "***Create k8s deployment & service***"
+echo -e "$Purple Create k8s objects\n$Color_Off"
 kubectl apply -k ./
 
+echo -e "$Purple\nDisplay all k8s objects\n$Color_Off"
 kubectl get all
 
 # docker desktop ip
