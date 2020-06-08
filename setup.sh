@@ -6,10 +6,9 @@ echo "***Build Docker Image***"
 docker build -t nginx nginx/
 
 echo "***Create k8s deployment & service***"
-kubectl create -f nginx/nginx_deployment.yml
-kubectl create -f nginx/nginx_service.yml
+kubectl apply -k ./
 
-kubectl get pods
+kubectl get all
 
 # docker desktop ip
 # 192.168.1.104
@@ -19,3 +18,7 @@ kubectl get pods
 
 # get all kubernetes content
 # kubectl get all
+
+# apply kustimization file is a quick way to deploy all ymal files
+# (create & reconfigure) kubectl apply -k ./ 
+# (delete) kubectl delete -k ./

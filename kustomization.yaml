@@ -1,0 +1,9 @@
+secretGenerator:
+- name: mysql-pass
+  literals:
+  - password=ft_service
+resources:
+  - nginx/nginx_deployment.yml
+  - nginx/nginx_service.yml
+  - mysql/mysql-deployment.yaml
+  - wordpress/wordpress-deployment.yaml

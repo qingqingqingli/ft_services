@@ -1,0 +1,24 @@
+[Getting a shell to a Container]
+- 	Verify that the Container is running:
+	kubectl get pod shell-demo
+-	Get a shell to the running Container:
+	kubectl exec -it shell-demo -- /bin/bash
+
+[Should service be created first or deployment?]
+- With service discovery, the service should be created before
+the replica set creates the replicas.
+
+[distinguish different port concepts]
+- port
+- target port
+- node port
+- end points
+
+[more concepts to understand]
+- DNS
+- ConfigMap
+- Volume
+- PersistentVolume
+- PersistentVolumeClaim
+
+[how to finish the installation from wordpress]
