@@ -19,6 +19,11 @@ echo -e "$Green Cleaning starts!\n$Color_Off"
 echo -e "$Green Delete k8s deployment & service\n$Color_Off"
 kubectl delete -k ./
 
+# remove ingress secret
+echo -e "$Green Delete ingress secret\n$Color_Off"
+kubectl delete secrets/ingress-secret-1
+kubectl delete secrets/ingress-secret-2
+
 # remove ingress controller
 # echo -e "$Green Remove Nginx Ingress Controller\n$Color_Off"
 # kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml

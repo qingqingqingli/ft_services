@@ -32,6 +32,11 @@ RUN openssl req -x509 \
 RUN mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 COPY srcs/nginx.conf /etc/nginx/
 
+# create a /bin/bash directory
+RUN mkdir -p /bin/bash
+RUN chmod -R 777 /bin/bash
+RUN chown -R www:www /bin/bash
+
 # expose ports
 EXPOSE 80 443
 

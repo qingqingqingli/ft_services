@@ -22,3 +22,10 @@ the replica set creates the replicas.
 - PersistentVolumeClaim
 
 [how to finish the installation from wordpress]
+
+[issues to fix]
+- the custom build wordpress image should've finished the installation
+- ingress traffic redirect should allow for certification
+- currently, ingress tls only works for localhost but not wordpress
+    ** potentially, the second certificate needs to be created
+       with localhost/wordpress

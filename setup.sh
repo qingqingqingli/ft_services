@@ -21,6 +21,10 @@ docker build -t nginx nginx/
 # echo -e "$Purple Install Nginx Ingress Controller\n$Color_Off"
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
 
+echo -e "$Purple Create ingress secrets\n$Color_Off"
+kubectl create secret tls ingress-secret-1 --key ingress/1_localhost.key --cert ingress/1_localhost.cert 
+kubectl create secret tls ingress-secret-2 --key ingress/2_localhost.key --cert ingress/2_localhost.cert 
+
 echo -e "$Purple Create k8s objects\n$Color_Off"
 kubectl apply -k ./
 
@@ -42,3 +46,8 @@ kubectl get all
 
 # get all kubernetes resources on all namespaces
 # kubectl get all --all-namespaces
+
+# check the file system inside a pod container
+# kubectl exec -it pod_name  -- /bin/sh
+# or 
+# kubectl exec -it pod_name  -- /bin/bash
