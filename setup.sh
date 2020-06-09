@@ -18,6 +18,9 @@ echo -e "$Purple Process starts!\n$Color_Off"
 echo -e "$Purple Build Docker Image\n$Color_Off"
 docker build -t nginx nginx/
 
+# echo -e "$Purple Install Nginx Ingress Controller\n$Color_Off"
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
+
 echo -e "$Purple Create k8s objects\n$Color_Off"
 kubectl apply -k ./
 
@@ -36,3 +39,6 @@ kubectl get all
 # apply kustimization file is a quick way to deploy all ymal files
 # (create & reconfigure) kubectl apply -k ./ 
 # (delete) kubectl delete -k ./
+
+# get all kubernetes resources on all namespaces
+# kubectl get all --all-namespaces

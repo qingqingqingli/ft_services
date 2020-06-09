@@ -8,5 +8,6 @@ secretGenerator:
 resources:
   - nginx/nginx_deployment.yml
   - nginx/nginx_service.yml
-  - mysql/mysql-deployment.yaml
-  - wordpress/wordpress-deployment.yaml
+  - mysql/mysql-deployment.yml
+  - wordpress/wordpress-deployment.yml
+  - ingress/nginx_ingress_controller.yml
