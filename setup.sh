@@ -15,20 +15,22 @@ White='\033[0;37m'        # White
 
 echo -e "$Purple Process starts!\n$Color_Off"
 
-echo -e "$Purple Build Docker Image\n$Color_Off"
+echo -e "$Purple Build Docker Image$Color_Off"
 docker build -t nginx nginx/
 
+# Installing nginx ingress takes some time
 # echo -e "$Purple Install Nginx Ingress Controller\n$Color_Off"
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
 
-echo -e "$Purple Create ingress secrets\n$Color_Off"
-kubectl create secret tls ingress-secret-1 --key ingress/1_localhost.key --cert ingress/1_localhost.cert 
-kubectl create secret tls ingress-secret-2 --key ingress/2_localhost.key --cert ingress/2_localhost.cert 
+echo -e "\n$Purple Create ingress secrets$Color_Off"
+# kubectl create secret tls ingress-secret-1 --key ingress/1_localhost.key --cert ingress/1_localhost.cert 
+kubectl create secret generic ca-secret --from-file=tls.crt=ingress/server.crt \
+--from-file=tls.key=ingress/server.key --from-file=ca.crt=ingress/ca.crt
 
-echo -e "$Purple Create k8s objects\n$Color_Off"
+echo -e "\n$Purple Create k8s objects$Color_Off"
 kubectl apply -k ./
 
-echo -e "$Purple\nDisplay all k8s objects\n$Color_Off"
+echo -e "\n$Purple\nDisplay all k8s objects$Color_Off"
 kubectl get all
 
 # docker desktop ip

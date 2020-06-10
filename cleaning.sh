@@ -16,21 +16,21 @@ White='\033[0;37m'        # White
 echo -e "$Green Cleaning starts!\n$Color_Off"
 
 # remove deployment
-echo -e "$Green Delete k8s deployment & service\n$Color_Off"
+echo -e "$Green Delete k8s deployment & service$Color_Off"
 kubectl delete -k ./
 
 # remove ingress secret
-echo -e "$Green Delete ingress secret\n$Color_Off"
-kubectl delete secrets/ingress-secret-1
-kubectl delete secrets/ingress-secret-2
+echo -e "\n$Green Delete ingress secret$Color_Off"
+# kubectl delete secrets/ingress-secret-1
+kubectl delete secrets/ca-secret
 
 # remove ingress controller
-# echo -e "$Green Remove Nginx Ingress Controller\n$Color_Off"
+# echo -e "\n$Green Remove Nginx Ingress Controller$Color_Off"
 # kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
 
 # remove all images
-echo -e "$Green Remove docker images\n$Color_Off"
+echo -e "\n$Green Remove docker images$Color_Off"
 docker image prune -a --force
 docker container prune -f
 
-echo -e "$Green Cleaning finishes!$Color_Off"
+echo -e "\n$Green Cleaning finishes!$Color_Off"
