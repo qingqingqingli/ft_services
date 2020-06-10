@@ -1,13 +1,9 @@
-secretGenerator:
-- name: mysql-pass
-  literals:
-  - password=ft_service
-  - dbname=wordpress
-  - dbuser=qli
-  - dbpass=ft_service
 resources:
   - nginx/nginx_deployment.yml
   - nginx/nginx_service.yml
   - mysql/mysql-deployment.yml
+  - mysql/mysql-secret.yml
   - wordpress/wordpress-deployment.yml
   - ingress/nginx_ingress_controller.yml
+  - phpmyadmin/phpmyadmin_deployment.yml
+  - phpmyadmin/phpmyadmin_service.yml
