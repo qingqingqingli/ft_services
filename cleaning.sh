@@ -21,8 +21,8 @@ kubectl delete -k ./
 
 # remove ingress secret
 echo -e "\n$Green Delete ingress secret$Color_Off"
-# kubectl delete secrets/ingress-secret-1
-kubectl delete secrets/ca-secret
+kubectl delete secrets/ingress-secret
+# kubectl delete secrets/ca-secret
 
 # remove ingress controller
 # echo -e "\n$Green Remove Nginx Ingress Controller$Color_Off"

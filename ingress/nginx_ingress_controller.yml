@@ -4,19 +4,11 @@ metadata:
   name: ingress-controller
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    # Enable client certificate authentication
-    # nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
-    # # Create the secret containing the trusted ca certificates
-    # nginx.ingress.kubernetes.io/auth-tls-secret: "default/ca-secret"
-    # # Specify the verification depth in the client certificates chain
-    # nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
-    # # Specify if certificates are passed to upstream server
-    # nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
 spec:
   tls:
   - hosts:
     - localhost
-    secretName: ca-secret
+    secretName: ingress-secret
   rules:
   - host: localhost
     http:
@@ -24,8 +16,4 @@ spec:
       - path: /
         backend:
           serviceName: nginx-frontend
-          servicePort: 80
-      - path: /wordpress
-        backend:
-          serviceName: wordpress
           servicePort: 80

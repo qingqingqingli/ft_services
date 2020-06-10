@@ -23,9 +23,9 @@ docker build -t nginx nginx/
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
 
 echo -e "\n$Purple Create ingress secrets$Color_Off"
-# kubectl create secret tls ingress-secret-1 --key ingress/1_localhost.key --cert ingress/1_localhost.cert 
-kubectl create secret generic ca-secret --from-file=tls.crt=ingress/server.crt \
---from-file=tls.key=ingress/server.key --from-file=ca.crt=ingress/ca.crt
+kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert 
+# kubectl create secret generic ca-secret --from-file=tls.crt=ingress/server.crt \
+# --from-file=tls.key=ingress/server.key --from-file=ca.crt=ingress/ca.crt
 
 echo -e "\n$Purple Create k8s objects$Color_Off"
 kubectl apply -k ./
