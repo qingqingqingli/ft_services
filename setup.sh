@@ -15,12 +15,16 @@ White='\033[0;37m'        # White
 
 echo -e "$Purple Process starts!\n$Color_Off"
 
-echo -e "$Purple Build Docker Image$Color_Off"
-docker build -t nginx nginx/
-
 # Installing nginx ingress takes some time
 # echo -e "$Purple Install Nginx Ingress Controller\n$Color_Off"
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
+
+# Installing k8s dashboard
+# echo -e "$Purple Install k8s dashboard\n$Color_Off"
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+
+echo -e "$Purple Build Docker Image$Color_Off"
+docker build -t nginx nginx/
 
 echo -e "\n$Purple Create ingress secrets$Color_Off"
 kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert 
