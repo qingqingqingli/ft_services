@@ -14,3 +14,4 @@ resources:
   - wordpress/wordpress-deployment.yml
   - ingress/nginx_ingress_controller.yml
   - phpmyadmin/phpmyadmin.yml
+  - dashboard/dashboard.yml
