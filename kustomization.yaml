@@ -2,7 +2,7 @@ secretGenerator:
 - name: mysql-pass
   literals:
   - password=test
-  - dbname=test
+  - dbname=wordpress
   - dbuser=test
   - dbpass=test
 
