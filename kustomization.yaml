@@ -1,10 +1,10 @@
 secretGenerator:
 - name: mysql-pass
   literals:
-  - password=ft_service
-  - dbname=wordpress
-  - dbuser=qli
-  - dbpass=ft_service
+  - password=test
+  - dbname=test
+  - dbuser=test
+  - dbpass=test
 
 resources:
   - nginx/nginx_deployment.yml
