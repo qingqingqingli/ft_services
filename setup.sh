@@ -77,3 +77,6 @@ kubectl get all
 # to get minikube ip
 # minikube ip
 # 192.168.99.100
+
+# minikube dashboard missing package
+# sudo apt install appmenu-gtk2-module appmenu-gtk3-module
