@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ft-services
-        image: nginx:latest
+        image: nginx_qli:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 80

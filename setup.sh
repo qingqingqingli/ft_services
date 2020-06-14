@@ -23,8 +23,11 @@ echo -e "$Purple Process starts!\n$Color_Off"
 # echo -e "$Purple Install k8s dashboard\n$Color_Off"
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
 
+# enable ingress controller
+# minikube addons enable ingress
+
 echo -e "$Purple Build Docker Image$Color_Off"
-docker build -t nginx nginx/
+docker build -t nginx_qli nginx/
 
 echo -e "\n$Purple Create ingress secrets$Color_Off"
 kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert 
@@ -57,3 +60,20 @@ kubectl get all
 # kubectl exec -it pod_name  -- /bin/sh
 # or 
 # kubectl exec -it pod_name  -- /bin/bash
+
+# to restart docker
+# sudo systemctl restart docker
+
+# to start minikube with a smaller amount of memory (docker as default)
+# minikube start --memory=1g
+
+# check minikube status
+# minikube status
+
+# to enable dashboard & ingress controller
+# minikube addons enable ingress
+# minikube addons enable dashboard
+
+# to get minikube ip
+# minikube ip
+# 192.168.99.100
