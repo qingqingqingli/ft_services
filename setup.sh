@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Reset
+# Set color
 Color_Off='\033[0m'       # Text Reset
-
-# Regular Colors
-Black='\033[0;30m'        # Black
+lack='\033[0;30m'        # Black
 Red='\033[0;31m'          # Red
 Green='\033[0;32m'        # Green
 Yellow='\033[0;33m'       # Yellow
@@ -13,26 +11,30 @@ Purple='\033[0;35m'       # Purple
 Cyan='\033[0;36m'         # Cyan
 White='\033[0;37m'        # White
 
-echo -e "$Purple Process starts!\n$Color_Off"
+echo -e "$Purple PROCESS STARTS\n$Color_Off"
+# minikube delete
+# mkdir -p ~/goinfre/minikube
+# chmod +x ~/goinfre/minikube
+# export MINIKUBE_HOME=/Volumes/Storage/goinfre/qli/minikube/
+# rm -rf /Volumes/Storage/goinfre/qli/minikube/.minikube
 
-# Installing nginx ingress takes some time
-# echo -e "$Purple Install Nginx Ingress Controller\n$Color_Off"
-# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
+# extend nodeport range at startup
+# minikube start --driver=virtualbox --extra-config=apiserver.service-node-p
+# ort-range=1-65535
 
-# Installing k8s dashboard
-# echo -e "$Purple Install k8s dashboard\n$Color_Off"
-# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+echo -e "$Purple Add ingress & dashboard$Color_Off"
+minikube addons enable ingress
+minikube addons enable dashboard
+sleep 60
 
-# enable ingress controller
-# minikube addons enable ingress
+# connect docker to minikube
+eval $(minikube -p minikube docker-env)
 
-echo -e "$Purple Build Docker Image$Color_Off"
+echo -e "\n$Purple Build Docker Image$Color_Off"
 docker build -t nginx_qli nginx/
 
 echo -e "\n$Purple Create ingress secrets$Color_Off"
 kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert 
-# kubectl create secret generic ca-secret --from-file=tls.crt=ingress/server.crt \
-# --from-file=tls.key=ingress/server.key --from-file=ca.crt=ingress/ca.crt
 
 echo -e "\n$Purple Create k8s objects$Color_Off"
 kubectl apply -k ./
@@ -80,3 +82,11 @@ kubectl get all
 
 # minikube dashboard missing package
 # sudo apt install appmenu-gtk2-module appmenu-gtk3-module
+
+# to check the current file usage
+# df -h
+
+# another way to create ingress secret
+# kubectl create secret generic ca-secret --from-file=tls.crt=ingress/server.crt \
+# --from-file=tls.key=ingress/server.key --from-file=ca.crt=ingress/ca.crt
+

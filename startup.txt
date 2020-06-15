@@ -1,0 +1,22 @@
+[Before running Docker, run the commands below]
+
+mkdir -p ~/goinfre/docker
+
+rm -rf ~/Library/Containers/com.docker.docker
+
+ln -s ~/goinfre/docker ~/Library/Containers/com.docker.docker
+
+
+[clearhome]
+
+alias clearhome="echo -n \"Available before:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4; unsetopt nomatch; rm -Rf ~/Library/*.42_cache_bak*; rm -Rf ~/*.42_cache_bak_*; setopt nomatch; echo -n \"Available after:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4;"
+
+clearhome
+
+[set up minikube]
+mkdir -p ~/goinfre/minikube
+chmod +x ~/goinfre/minikube
+export MINIKUBE_HOME=/Volumes/Storage/goinfre/qli/minikube/
+
+#direct docker to minikube
+eval $(minikube -p minikube docker-env)
