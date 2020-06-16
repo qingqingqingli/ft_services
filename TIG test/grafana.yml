@@ -8,7 +8,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 5050
+    nodePort: 3000
   selector:
     app: grafana
   type: NodePort
@@ -21,6 +21,9 @@ metadata:
   labels:
     app: grafana
 spec:
+  selector:
+    matchLabels:
+      app: grafana
   template:
     metadata:
       labels:
@@ -32,6 +35,3 @@ spec:
         ports:
         - containerPort: 3000
           name: grafana
-        volumeMounts:
-        - name: grafana-data
-          mountPath: /var/lib/grafana

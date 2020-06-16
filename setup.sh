@@ -22,9 +22,9 @@ White='\033[0;37m'        # White
 # minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535
 
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
-minikube addons enable ingress
-minikube addons enable dashboard
-sleep 60
+# minikube addons enable ingress
+# minikube addons enable dashboard
+# sleep 60
 
 # connect docker to minikube
 echo -e "$Purple connect docker to minikube$Color_Off"
