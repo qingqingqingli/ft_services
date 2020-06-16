@@ -11,7 +11,7 @@ Purple='\033[0;35m'       # Purple
 Cyan='\033[0;36m'         # Cyan
 White='\033[0;37m'        # White
 
-echo -e "$Purple PROCESS STARTS\n$Color_Off"
+# echo -e "$Purple PROCESS STARTS\n$Color_Off"
 # minikube delete
 # mkdir -p ~/goinfre/minikube
 # chmod +x ~/goinfre/minikube
@@ -19,19 +19,19 @@ echo -e "$Purple PROCESS STARTS\n$Color_Off"
 # rm -rf /Volumes/Storage/goinfre/qli/minikube/.minikube
 
 # extend nodeport range at startup
-# minikube start --driver=virtualbox --extra-config=apiserver.service-node-p
-# ort-range=1-65535
+# minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535
 
-echo -e "$Purple Add ingress & dashboard$Color_Off"
+# echo -e "$Purple Add ingress & dashboard$Color_Off"
 minikube addons enable ingress
 minikube addons enable dashboard
 sleep 60
 
 # connect docker to minikube
+echo -e "$Purple connect docker to minikube$Color_Off"
 eval $(minikube -p minikube docker-env)
 
 echo -e "\n$Purple Build Docker Image$Color_Off"
-docker build -t nginx_qli nginx/
+docker build -t nginx nginx/
 
 echo -e "\n$Purple Create ingress secrets$Color_Off"
 kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert 
@@ -42,8 +42,14 @@ kubectl apply -k ./
 echo -e "\n$Purple\nDisplay all k8s objects$Color_Off"
 kubectl get all
 
-# docker desktop ip
-# 192.168.1.104
+echo -e "\n$Purple\nAccess to services: \n$Color_Off"
+echo -e "Link to Nginx: https://$(minikube ip)"
+echo -e "Link to Wordpress: http://$(minikube ip):5050"
+echo -e "Link to phpMyAdmin: http://$(minikube ip):5000"
+
+echo -e "\n$Purple\nDisplay dashboard$Color_Off"
+minikube dashboard
+
 
 # Run the image in docker 
 # docker run --rm -it -p 80:80 -p 443:443 nginx:latest
@@ -72,13 +78,8 @@ kubectl get all
 # check minikube status
 # minikube status
 
-# to enable dashboard & ingress controller
-# minikube addons enable ingress
-# minikube addons enable dashboard
-
 # to get minikube ip
 # minikube ip
-# 192.168.99.100
 
 # minikube dashboard missing package
 # sudo apt install appmenu-gtk2-module appmenu-gtk3-module
@@ -90,3 +91,5 @@ kubectl get all
 # kubectl create secret generic ca-secret --from-file=tls.crt=ingress/server.crt \
 # --from-file=tls.key=ingress/server.key --from-file=ca.crt=ingress/ca.crt
 
+# replace all the IP addresses - Does not work yet
+# sed -i '' 's/MINIKUBE_IP/$(minikube ip)/g' nginx/srcs/index.html

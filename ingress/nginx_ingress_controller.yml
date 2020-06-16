@@ -6,12 +6,9 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   tls:
-  - hosts:
-    - localhost
-    secretName: ingress-secret
+  - secretName: ingress-secret
   rules:
-  - host: localhost
-    http:
+  - http:
       paths:
       - path: /
         backend:
