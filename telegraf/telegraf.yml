@@ -1,0 +1,89 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: telegraf-secret
+type: Opaque
+stringData:
+  INFLUXDB_DB: influxdb-database
+  INFLUXDB_URL: http://192.168.99.110:8086 #changed influxdb to minikube_ip
+  INFLUXDB_USER: root
+  INFLUXDB_USER_PASSWORD: root
+  INFLUXDB_HOST: influxdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: telegraf
+  labels:
+    app: telegraf
+spec:
+  ports:
+    - port: 8125
+      nodePort: 8125
+      protocol: UDP
+  selector:
+    app: telegraf
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: telegraf
+  name: telegraf
+spec:
+  selector:
+    matchLabels:
+      app: telegraf
+  template:
+    metadata:
+      labels:
+        app: telegraf
+    spec:
+      containers:
+        - name: telegraf
+          image: telegraf:1.10.1
+          envFrom:
+            - secretRef:
+               name: telegraf-secret
+          volumeMounts:
+            - name: telegraf-config-volume
+              mountPath: /etc/telegraf/telegraf.conf
+              subPath: telegraf.conf
+              readOnly: true
+      volumes:
+      - name: telegraf-config-volume
+        configMap:
+          name: telegraf-config
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-config
+data:
+  telegraf.conf: |+
+    [[outputs.influxdb]]
+      urls = ["$INFLUXDB_URL"]
+      database = "$INFLUXDB_DB"
+      username = "$INFLUXDB_USER"
+      password = "$INFLUXDB_USER_PASSWORD"
+
+    [[inputs.disk]]
+      mount_points = ["/var/lib/mysql", "/var/lib/influxdb"]
+
+    [[inputs.statsd]]
+      max_tcp_connections = 250
+      tcp_keep_alive = false
+      service_address = ":8125"
+      delete_gauges = true
+      delete_counters = true
+      delete_sets = true
+      delete_timings = true
+      metric_separator = "."
+      allowed_pending_messages = 10000
+      percentile_limit = 1000
+      parse_data_dog_tags = true 
+      read_buffer_size = 65535

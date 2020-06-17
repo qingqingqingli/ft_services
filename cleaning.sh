@@ -18,6 +18,7 @@ echo -e "$Green Cleaning starts!\n$Color_Off"
 # remove deployment
 echo -e "$Green Delete k8s deployment & service$Color_Off"
 kubectl delete -k ./
+kubectl delete configmap/grafana-config
 
 # remove ingress secret
 echo -e "\n$Green Delete ingress secret$Color_Off"

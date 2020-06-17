@@ -1,3 +1,17 @@
+#potentially need to add the secrets
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: influxdb-secret
+type: Opaque
+stringData:
+  INFLUXDB_DB: influxdb-database
+  INFLUXDB_URL: http://192.168.99.110:8086 #changed influxdb to minikube_ip
+  INFLUXDB_USER: test
+  INFLUXDB_USER_PASSWORD: test
+  INFLUXDB_HOST: influxdb
+
 ---
 apiVersion: v1
 kind: Service
@@ -7,7 +21,7 @@ metadata:
     app: influxdb
 spec:
   ports:
-    - port: 3306
+    - port: 8086
   selector:
     app: influxdb
   clusterIP: None
@@ -34,6 +48,9 @@ metadata:
   labels:
     app: influxdb
 spec:
+  selector:
+    matchLabels:
+      app: influxdb
   template:
     metadata:
       labels:
@@ -42,11 +59,14 @@ spec:
       containers:
       - name: influxdb
         image: influxdb
+        envFrom:
+        - secretRef:
+           name: influxdb-secret
         ports:
         - containerPort: 8086
           name: influxdb
         volumeMounts:
-        - name: influxdb-data
+        - name: influxdb-persistent-storage
           mountPath: /var/lib/influxdb
       volumes:
       - name: influxdb-persistent-storage

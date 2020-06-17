@@ -13,18 +13,18 @@ White='\033[0;37m'        # White
 
 # echo -e "$Purple PROCESS STARTS\n$Color_Off"
 # minikube delete
-# mkdir -p ~/goinfre/minikube
-# chmod +x ~/goinfre/minikube
-# export MINIKUBE_HOME=/Volumes/Storage/goinfre/qli/minikube/
-# rm -rf /Volumes/Storage/goinfre/qli/minikube/.minikube
+rm -rf /Volumes/Storage/goinfre/qli/minikube/.minikube
+mkdir -p ~/goinfre/minikube
+chmod +x ~/goinfre/minikube
+export MINIKUBE_HOME=/Volumes/Storage/goinfre/qli/minikube/
 
 # extend nodeport range at startup
-# minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535
+minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535
 
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
-# minikube addons enable ingress
-# minikube addons enable dashboard
-# sleep 60
+minikube addons enable ingress
+minikube addons enable dashboard
+sleep 60
 
 # connect docker to minikube
 echo -e "$Purple connect docker to minikube$Color_Off"
@@ -35,6 +35,11 @@ docker build -t nginx nginx/
 
 echo -e "\n$Purple Create ingress secrets$Color_Off"
 kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert 
+
+echo -e "\n$Purple Create grafana configmap$Color_Off"
+kubectl create configmap grafana-config \
+  --from-file=influxdb-datasource.yml=grafana/influxdb-datasource.yml \
+  --from-file=grafana-dashboard-provider.yml=grafana/grafana-dashboard-provider.yml
 
 echo -e "\n$Purple Create k8s objects$Color_Off"
 kubectl apply -k ./

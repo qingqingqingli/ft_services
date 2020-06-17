@@ -14,5 +14,6 @@ resources:
   - wordpress/wordpress-deployment.yml
   - ingress/nginx_ingress_controller.yml
   - phpmyadmin/phpmyadmin.yml
-  - influxDB/influxdb-secret.yml
-  - influxDB/influxdb-deployment.yml
+  - influxDB/influxdb.yml
+  - grafana/grafana.yml
+  - telegraf/telegraf.yml
