@@ -1,4 +1,3 @@
-#potentially need to add the secrets
 ---
 apiVersion: v1
 kind: Secret
@@ -6,11 +5,10 @@ metadata:
   name: influxdb-secret
 type: Opaque
 stringData:
-  INFLUXDB_DB: influxdb-database
-  INFLUXDB_URL: http://192.168.99.110:8086 #changed influxdb to minikube_ip
-  INFLUXDB_USER: test
-  INFLUXDB_USER_PASSWORD: test
-  INFLUXDB_HOST: influxdb
+  INFLUXDB_DATABASE: influxdb-database
+  INFLUXDB_USERNAME: test
+  INFLUXDB_PASSWORD: test
+  INFLUXDB_HOST: 192.168.99.114
 
 ---
 apiVersion: v1
