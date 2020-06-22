@@ -24,6 +24,7 @@ White='\033[0;37m'        # White
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
 # minikube addons enable ingress
 # minikube addons enable dashboard
+# minikube addons enable metrics-server
 # sleep 60
 
 # connect docker to minikube
