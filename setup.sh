@@ -51,6 +51,8 @@ echo -e "Link to Grafana: http://$(minikube ip):3000"
 echo -e "\n$Purple\nDisplay dashboard$Color_Off"
 minikube dashboard
 
+# check for container logs
+# kubectl logs -f container_name
 
 # Run the image in docker 
 # docker run --rm -it -p 80:80 -p 443:443 nginx:latest

@@ -58,6 +58,53 @@ spec:
         configMap:
           name: telegraf-config
 
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: telegraf-config
+# data:
+#   telegraf.conf: |+
+#     [[outputs.influxdb]]
+#       urls = ["$INFLUXDB_URL"]
+#       database = "$INFLUXDB_DB"
+#       username = "$INFLUXDB_USER"
+#       password = "$INFLUXDB_USER_PASSWORD"
+
+#     [[inputs.kube_inventory]]
+#       ## URL for the Kubernetes API
+#       url = "http://192.168.99.114"
+
+#       ## Namespace to use. Set to "" to use all namespaces.
+#       # namespace = "default"
+
+#       ## Use bearer token for authorization. ('bearer_token' takes priority)
+#       ## If both of these are empty, we'll use the default serviceaccount:
+#       ## at: /run/secrets/kubernetes.io/serviceaccount/token
+#       # bearer_token = "/path/to/bearer/token"
+#       ## OR
+#       bearer_token_string = "eyJhbGciOiJSUzI1NiIsImtpZCI6Im1aUzdDRFVxTXpJNEpQNWNuTnA5Sm9Oem56YWhfbTE0TDNzMXUxQlh1dmcifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZWZhdWx0LXRva2VuLWpocWNkIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImRlZmF1bHQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIzZGQ5YjgwYS0yMjhjLTRmODMtOTM1MS0xYzk1ODFjYmRjYTgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6ZGVmYXVsdCJ9.YRtvLScNoZNUQQhaJqhO1S4_LRk5ARRrqv4hNe_-dEGcxgVpRLs8sVdsbu__56INgNOgI8n28uQfjvuwkugucAZZYBzyab9Ca0GMULOKgB9T27OAUsXopME1aX0HyneLLegAORyFiooR4fWv7KebShuh4xUxN_I3iyHFziu7bNxoeEwwmCo1gx87pRBRRRNyxdA-3CIGWOd55ozS2oak_9NTKU2G5qJiFuoZ3wEz_jfo4XgehwzXVIREyuTz7RwpHwkK2Dsjm2O2CQM5twuBfHK3FjOsx8zd6hInrhnb3P9LbftBIPs_qlMF-VL23gP8ft9iCFiMwQvfcE6EwgvyoQ"
+
+#       ## Set response_timeout (default 5 seconds)
+#       # response_timeout = "5s"
+
+#       ## Optional Resources to exclude from gathering
+#       ## Leave them with blank with try to gather everything available.
+#       ## Values can be - "daemonsets", deployments", "endpoints", "ingress", "nodes",
+#       ## "persistentvolumes", "persistentvolumeclaims", "pods", "services", "statefulsets"
+#       # resource_exclude = [ "deployments", "nodes", "statefulsets" ]
+
+#       ## Optional Resources to include when gathering
+#       ## Overrides resource_exclude if both set.
+#       # resource_include = [ "deployments", "nodes", "statefulsets" ]
+
+#       ## Optional TLS Config
+#       # tls_ca = "/path/to/cafile"
+#       # tls_cert = "/path/to/certfile"
+#       # tls_key = "/path/to/keyfile"
+#       ## Use TLS but skip chain & host verification
+#       # insecure_skip_verify = false
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -71,16 +118,36 @@ data:
       username = "$INFLUXDB_USER"
       password = "$INFLUXDB_USER_PASSWORD"
 
-    [[inputs.statsd]]
-      max_tcp_connections = 250
-      tcp_keep_alive = false
-      service_address = ":8125"
-      delete_gauges = true
-      delete_counters = true
-      delete_sets = true
-      delete_timings = true
-      metric_separator = "."
-      allowed_pending_messages = 10000
-      percentile_limit = 1000
-      parse_data_dog_tags = true 
-      read_buffer_size = 65535
+    [[inputs.kube_inventory]]
+      ## URL for the Kubernetes API
+      url = "https://192.168.99.114"
+
+      ## Namespace to use. Set to "" to use all namespaces.
+      # namespace = "default"
+
+      ## Use bearer token for authorization. ('bearer_token' takes priority)
+      ## If both of these are empty, we'll use the default serviceaccount:
+      ## at: /run/secrets/kubernetes.io/serviceaccount/token
+      # bearer_token = "/path/to/bearer/token"
+      ## OR
+      bearer_token_string = "eyJhbGciOiJSUzI1NiIsImtpZCI6Im1aUzdDRFVxTXpJNEpQNWNuTnA5Sm9Oem56YWhfbTE0TDNzMXUxQlh1dmcifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZWZhdWx0LXRva2VuLWpocWNkIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImRlZmF1bHQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIzZGQ5YjgwYS0yMjhjLTRmODMtOTM1MS0xYzk1ODFjYmRjYTgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6ZGVmYXVsdCJ9.YRtvLScNoZNUQQhaJqhO1S4_LRk5ARRrqv4hNe_-dEGcxgVpRLs8sVdsbu__56INgNOgI8n28uQfjvuwkugucAZZYBzyab9Ca0GMULOKgB9T27OAUsXopME1aX0HyneLLegAORyFiooR4fWv7KebShuh4xUxN_I3iyHFziu7bNxoeEwwmCo1gx87pRBRRRNyxdA-3CIGWOd55ozS2oak_9NTKU2G5qJiFuoZ3wEz_jfo4XgehwzXVIREyuTz7RwpHwkK2Dsjm2O2CQM5twuBfHK3FjOsx8zd6hInrhnb3P9LbftBIPs_qlMF-VL23gP8ft9iCFiMwQvfcE6EwgvyoQ"
+
+      ## Set response_timeout (default 5 seconds)
+      # response_timeout = "5s"
+
+      ## Optional Resources to exclude from gathering
+      ## Leave them with blank with try to gather everything available.
+      ## Values can be - "daemonsets", deployments", "endpoints", "ingress", "nodes",
+      ## "persistentvolumes", "persistentvolumeclaims", "pods", "services", "statefulsets"
+      # resource_exclude = [ "deployments", "nodes", "statefulsets" ]
+
+      ## Optional Resources to include when gathering
+      ## Overrides resource_exclude if both set.
+      # resource_include = [ "deployments", "nodes", "statefulsets" ]
+
+      ## Optional TLS Config
+      # tls_ca = "/path/to/cafile"
+      # tls_cert = "/path/to/certfile"
+      # tls_key = "/path/to/keyfile"
+      ## Use TLS but skip chain & host verification
+      insecure_skip_verify = true
