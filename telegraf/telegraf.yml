@@ -7,8 +7,8 @@ type: Opaque
 stringData:
   INFLUXDB_DB: influxdb-database
   INFLUXDB_URL: http://influxdb:8086
-  INFLUXDB_USER: test
-  INFLUXDB_USER_PASSWORD: test
+  INFLUXDB_USER: root
+  INFLUXDB_USER_PASSWORD: root
 
 ---
 apiVersion: v1
@@ -44,170 +44,97 @@ spec:
     spec:
       containers:
         - name: telegraf
-          image: telegraf:1.10.1
+          image: telegraf:1.13-alpine
           envFrom:
             - secretRef:
                name: telegraf-secret
           volumeMounts:
-            - name: telegraf-config-volume
-              mountPath: /etc/telegraf/telegraf.conf
-              subPath: telegraf.conf
-              readOnly: true
+          - name: telegraf-config-volume
+            mountPath: etc/telegraf/telegraf.conf
+            subPath: telegraf.conf
+          - name: docker-socket
+            mountPath: /var/run/docker.sock
       volumes:
       - name: telegraf-config-volume
         configMap:
           name: telegraf-config
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: telegraf-config
+  labels:
+    app: telegraf
 data:
   telegraf.conf: |+
-    # Configuration for telegraf agent
-    [agent]
-      ## Default data collection interval for all inputs
-      interval = "10s"
-      ## Rounds collection interval to 'interval'
-      ## ie, if interval="10s" then always collect on :00, :10, :20, etc.
-      round_interval = true
+      # # Global Agent Configuration
+      # [global_tags]
+      #   user = "$INFLUXDB_USER"
 
-      ## Telegraf will send metrics to outputs in batches of at most
-      ## metric_batch_size metrics.
-      ## This controls the size of writes that Telegraf sends to output plugins.
-      metric_batch_size = 1000
+      # Read metrics about docker containers
+      [[inputs.docker]]
+        ## Docker Endpoint
+        ##   To use TCP, set endpoint = "tcp://[ip]:[port]"
+        ##   To use environment variables (ie, docker-machine), set endpoint = "ENV"
+        endpoint = "unix:///var/run/docker.sock"
 
-      ## For failed writes, telegraf will cache metric_buffer_limit metrics for each
-      ## output, and will flush this buffer on a successful write. Oldest metrics
-      ## are dropped first when this buffer fills.
-      ## This buffer only fills when writes fail to output plugin(s).
-      metric_buffer_limit = 10000
+        ## Set to true to collect Swarm metrics(desired_replicas, running_replicas)
+        ## Note: configure this in one of the manager nodes in a Swarm cluster.
+        ## configuring in multiple Swarm managers results in duplication of metrics.
+        gather_services = false
 
-      ## Collection jitter is used to jitter the collection by a random amount.
-      ## Each plugin will sleep for a random time within jitter before collecting.
-      ## This can be used to avoid many plugins querying things like sysfs at the
-      ## same time, which can have a measurable effect on the system.
-      collection_jitter = "0s"
+        ## Only collect metrics for these containers. Values will be appended to
+        ## container_name_include.
+        ## Deprecated (1.4.0), use container_name_include
+        container_names = []
 
-      ## Default flushing interval for all outputs. Maximum flush_interval will be
-      ## flush_interval + flush_jitter
-      flush_interval = "10s"
-      ## Jitter the flush interval by a random amount. This is primarily to avoid
-      ## large write spikes for users running a large number of telegraf instances.
-      ## ie, a jitter of 5s and interval 10s means flushes will happen every 10-15s
-      flush_jitter = "0s"
+        ## Set the source tag for the metrics to the container ID hostname, eg first 12 chars
+        source_tag = false
 
-      ## By default or when set to "0s", precision will be set to the same
-      ## timestamp order as the collection interval, with the maximum being 1s.
-      ##   ie, when interval = "10s", precision will be "1s"
-      ##       when interval = "250ms", precision will be "1ms"
-      ## Precision will NOT be used for service inputs. It is up to each individual
-      ## service input to set the timestamp at the appropriate precision.
-      ## Valid time units are "ns", "us" (or "µs"), "ms", "s".
-      precision = ""
+        ## Containers to include and exclude. Collect all if empty. Globs accepted.
+        container_name_include = []
+        container_name_exclude = []
 
-      ## Logging configuration:
-      ## Run telegraf with debug log messages.
-      debug = false
-      ## Run telegraf in quiet mode (error log messages only).
-      quiet = false
-      ## Specify the log file name. The empty string means to log to stderr.
-      logfile = ""
+        ## Container states to include and exclude. Globs accepted.
+        ## When empty only containers in the "running" state will be captured.
+        ## example: container_state_include = ["created", "restarting", "running", "removing", "paused", "exited", "dead"]
+        ## example: container_state_exclude = ["created", "restarting", "running", "removing", "paused", "exited", "dead"]
+        # container_state_include = []
+        # container_state_exclude = []
 
-      ## Override default hostname, if empty use os.Hostname()
-      hostname = ""
-      ## If set to true, do no set the "host" tag in the telegraf agent.
-      omit_hostname = true
+        ## Timeout for docker list, info, and stats commands
+        timeout = "20s"
 
-    [[outputs.influxdb]]
-      urls = ["$INFLUXDB_URL"]
-      database = "$INFLUXDB_DB"
-      username = "$INFLUXDB_USER"
-      password = "$INFLUXDB_USER_PASSWORD"
+        ## Whether to report for each container per-device blkio (8:0, 8:1...) and
+        ## network (eth0, eth1, ...) stats or not
+        perdevice = true
 
-    ###############################################################################
-    #                            INPUT PLUGINS                                    #
-    ###############################################################################
+        ## Whether to report for each container total blkio and network stats or not
+        total = false
 
-    # Read metrics about cpu usage
-    [[inputs.cpu]]
-      ## Whether to report per-cpu stats or not
-      percpu = true
-      ## Whether to report total system cpu stats or not
-      totalcpu = true
-      ## If true, collect raw CPU time metrics.
-      collect_cpu_time = false
-      ## If true, compute and report the sum of all non-idle CPU states.
-      report_active = false
+        ## docker labels to include and exclude as tags.  Globs accepted.
+        ## Note that an empty array for both will include all labels as tags
+        docker_label_include = []
+        docker_label_exclude = []
 
+        ## Which environment variables should we use as a tag
+        tag_env = ["JAVA_HOME", "HEAP_SIZE"]
 
-    # Read metrics about disk usage by mount point
-    [[inputs.disk]]
-      ## By default stats will be gathered for all mount points.
-      ## Set mount_points will restrict the stats to only the specified mount points.
-      # mount_points = ["/"]
+        ## Optional TLS Config
+        # tls_ca = "/etc/telegraf/ca.pem"
+        # tls_cert = "/etc/telegraf/cert.pem"
+        # tls_key = "/etc/telegraf/key.pem"
+        ## Use TLS but skip chain & host verification
+        # insecure_skip_verify = false
 
-      ## Ignore mount points by filesystem type.
-      ignore_fs = ["tmpfs", "devtmpfs", "devfs", "overlay", "aufs", "squashfs"]
-
-
-    # Read metrics about disk IO by device
-    [[inputs.diskio]]
-      ## By default, telegraf will gather stats for all devices including
-      ## disk partitions.
-      ## Setting devices will restrict the stats to the specified devices.
-      # devices = ["sda", "sdb", "vd*"]
-      ## Uncomment the following line if you need disk serial numbers.
-      # skip_serial_number = false
-      #
-      ## On systems which support it, device metadata can be added in the form of
-      ## tags.
-      ## Currently only Linux is supported via udev properties. You can view
-      ## available properties for a device by running:
-      ## 'udevadm info -q property -n /dev/sda'
-      # device_tags = ["ID_FS_TYPE", "ID_FS_USAGE"]
-      #
-      ## Using the same metadata source as device_tags, you can also customize the
-      ## name of the device via templates.
-      ## The 'name_templates' parameter is a list of templates to try and apply to
-      ## the device. The template may contain variables in the form of '$PROPERTY' or
-      ## '${PROPERTY}'. The first template which does not contain any variables not
-      ## present for the device is used as the device name tag.
-      ## The typical use case is for LVM volumes, to get the VG/LV name instead of
-      ## the near-meaningless DM-0 name.
-      # name_templates = ["$ID_FS_LABEL","$DM_VG_NAME/$DM_LV_NAME"]
-
-    [[inputs.kube_inventory]]
-      ## URL for the Kubernetes API
-      url = "http://192.168.99.104"
-
-      ## Namespace to use. Set to "" to use all namespaces.
-      namespace = "default"
-
-      ## Use bearer token for authorization. ('bearer_token' takes priority)
-      ## If both of these are empty, we'll use the default serviceaccount:
-      ## at: /run/secrets/kubernetes.io/serviceaccount/token
-      # bearer_token = "/path/to/bearer/token"
-      ## OR
-      bearer_token_string = "eyJhbGciOiJSUzI1NiIsImtpZCI6Im1aUzdDRFVxTXpJNEpQNWNuTnA5Sm9Oem56YWhfbTE0TDNzMXUxQlh1dmcifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZWZhdWx0LXRva2VuLWpocWNkIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImRlZmF1bHQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIzZGQ5YjgwYS0yMjhjLTRmODMtOTM1MS0xYzk1ODFjYmRjYTgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6ZGVmYXVsdCJ9.YRtvLScNoZNUQQhaJqhO1S4_LRk5ARRrqv4hNe_-dEGcxgVpRLs8sVdsbu__56INgNOgI8n28uQfjvuwkugucAZZYBzyab9Ca0GMULOKgB9T27OAUsXopME1aX0HyneLLegAORyFiooR4fWv7KebShuh4xUxN_I3iyHFziu7bNxoeEwwmCo1gx87pRBRRRNyxdA-3CIGWOd55ozS2oak_9NTKU2G5qJiFuoZ3wEz_jfo4XgehwzXVIREyuTz7RwpHwkK2Dsjm2O2CQM5twuBfHK3FjOsx8zd6hInrhnb3P9LbftBIPs_qlMF-VL23gP8ft9iCFiMwQvfcE6EwgvyoQ"
-
-      ## Set response_timeout (default 5 seconds)
-      # response_timeout = "5s"
-
-      ## Optional Resources to exclude from gathering
-      ## Leave them with blank with try to gather everything available.
-      ## Values can be - "daemonsets", deployments", "endpoints", "ingress", "nodes",
-      ## "persistentvolumes", "persistentvolumeclaims", "pods", "services", "statefulsets"
-      # resource_exclude = [ "deployments", "nodes", "statefulsets" ]
-
-      ## Optional Resources to include when gathering
-      ## Overrides resource_exclude if both set.
-      # resource_include = [ "deployments", "nodes", "statefulsets" ]
-
-      ## Optional TLS Config
-      # tls_ca = "/path/to/cafile"
-      # tls_cert = "/path/to/certfile"
-      # tls_key = "/path/to/keyfile"
-      ## Use TLS but skip chain & host verification
-      insecure_skip_verify = true
+      # Output Plugin InfluxDB
+      [[outputs.influxdb]]
+        urls = ["$INFLUXDB_URL"]
+        skip_database_creation = false
+        database = "$INFLUXDB_DB"
+        username = "$INFLUXDB_USER"
+        password = "$INFLUXDB_USER_PASSWORD"

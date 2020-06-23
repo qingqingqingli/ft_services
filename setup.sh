@@ -19,17 +19,19 @@ White='\033[0;37m'        # White
 # export MINIKUBE_HOME=/Volumes/Storage/goinfre/qli/minikube/
 
 # extend nodeport range at startup
-# minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535
+# minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true
+
+# replace all MINIKUBE_IP
 
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
-# minikube addons enable ingress
-# minikube addons enable dashboard
-# minikube addons enable metrics-server
+minikube addons enable ingress
+minikube addons enable dashboard
+minikube addons enable metrics-server
 # sleep 60
 
 # connect docker to minikube
 # echo -e "$Purple connect docker to minikube$Color_Off"
-# eval $(minikube -p minikube docker-env)
+eval $(minikube -p minikube docker-env)
 
 echo -e "\n$Purple Build Docker Image$Color_Off"
 docker build -t nginx nginx/
@@ -39,6 +41,9 @@ kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingr
 
 echo -e "\n$Purple Create k8s objects$Color_Off"
 kubectl apply -k ./
+
+sleep 45
+kubectl apply -f influxDB/influxdb.yml
 
 echo -e "\n$Purple\nDisplay all k8s objects$Color_Off"
 kubectl get all
