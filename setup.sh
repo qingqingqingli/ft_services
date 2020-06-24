@@ -37,13 +37,14 @@ echo -e "\n$Purple Build Docker Image$Color_Off"
 docker build -t nginx nginx/
 
 echo -e "\n$Purple Create ingress secrets$Color_Off"
-kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert 
+kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
+kubectl apply -f secret.yml 
 
 echo -e "\n$Purple Create k8s objects$Color_Off"
 kubectl apply -k ./
 
-sleep 45
-kubectl apply -f influxDB/influxdb.yml
+# sleep 45
+# kubectl apply -f influxDB/influxdb.yml
 
 echo -e "\n$Purple\nDisplay all k8s objects$Color_Off"
 kubectl get all

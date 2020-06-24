@@ -306,7 +306,7 @@ data:
 
     [[inputs.kube_inventory]]
       ## URL for the Kubernetes API
-      url = "https://192.168.99.118:8443"
+      url = "https://192.168.99.105:8443"
 
       ## Namespace to use. Set to "" to use all namespaces.
       namespace = ""
