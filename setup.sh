@@ -48,19 +48,29 @@ White='\033[0;37m'        # White
 #                           BUILD CUSTOM IMAGES                    #
 ####################################################################
 
-# echo -e "\n$Purple Build Docker Image$Color_Off"
-# docker build -t nginx nginx/
+echo -e "\n$Purple Build Docker Image$Color_Off"
+docker build -t nginx nginx/
 
 ####################################################################
 #                           BUILD K8S OBJECTS                      #
 ####################################################################
 
 # echo -e "\n$Purple Create ingress secrets$Color_Off"
-# kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
-# kubectl apply -f secret.yml 
+kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
+kubectl apply -f secret.yml 
+
+# create configmap
+kubectl create configmap grafana-config --from-file=grafana/grafana_datasource.yml \
+--from-file=grafana/grafana_dashboard_provider.yml \
+--from-file=grafana/influxdb_dashboard.json \
+--from-file=grafana/mysql_dashboard.json \
+--from-file=grafana/grafana_dashboard.json \
+--from-file=grafana/nginx_dashboard.json \
+--from-file=grafana/phpmyadmin_dashboard.json \
+--from-file=grafana/wordpress_dashboard.json
 
 # echo -e "\n$Purple Create k8s objects$Color_Off"
-# kubectl apply -k ./
+kubectl apply -k ./
 
 ####################################################################
 #                           DISPLAY OBJECTS & LINKS                #

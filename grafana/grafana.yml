@@ -35,6 +35,39 @@ spec:
         ports:
         - containerPort: 3000
           name: grafana
+        volumeMounts:
+        - mountPath: /etc/grafana/provisioning/datasources/grafana_datasource.yml
+          name: grafana-config-volume
+          readOnly: true
+          subPath: grafana_datasource.yml
+        - mountPath: /etc/grafana/provisioning/dashboards/grafana_dashboard_provider.yml
+          name: grafana-config-volume
+          readOnly: true
+          subPath: grafana_dashboard_provider.yml
+        - mountPath: /var/lib/grafana/dashboards/influxdb_dashboard.json
+          name: grafana-config-volume
+          readOnly: true
+          subPath: influxdb_dashboard.json
+        - mountPath: /var/lib/grafana/dashboards/mysql_dashboard.json
+          name: grafana-config-volume
+          readOnly: true
+          subPath: mysql_dashboard.json
+        - mountPath: /var/lib/grafana/dashboards/grafana_dashboard.json
+          name: grafana-config-volume
+          readOnly: true
+          subPath: grafana_dashboard.json
+        - mountPath: /var/lib/grafana/dashboards/nginx_dashboard.json
+          name: grafana-config-volume
+          readOnly: true
+          subPath: nginx_dashboard.json
+        - mountPath: /var/lib/grafana/dashboards/phpmyadmin_dashboard.json
+          name: grafana-config-volume
+          readOnly: true
+          subPath: phpmyadmin_dashboard.json
+        - mountPath: /var/lib/grafana/dashboards/wordpress_dashboard.json
+          name: grafana-config-volume
+          readOnly: true
+          subPath: wordpress_dashboard.json
         env:
         - name: GF_SECURITY_ADMIN_USER
           valueFrom:
@@ -46,5 +79,9 @@ spec:
             secretKeyRef:
               name: grafana-secret
               key: admin_pw
+      volumes:
+      - name: grafana-config-volume
+        configMap:
+          name: grafana-config
           
 

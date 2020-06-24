@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Reset
+# Color values
 Color_Off='\033[0m'       # Text Reset
-
-# Regular Colors
 Black='\033[0;30m'        # Black
 Red='\033[0;31m'          # Red
 Green='\033[0;32m'        # Green
@@ -13,24 +11,29 @@ Purple='\033[0;35m'       # Purple
 Cyan='\033[0;36m'         # Cyan
 White='\033[0;37m'        # White
 
+####################################################################
+#                           CLEANING STARTS                        #
+####################################################################
 echo -e "$Green Cleaning starts!\n$Color_Off"
 
-# remove deployment
+####################################################################
+#                           REMOVING K8S OBJECTS                   #
+####################################################################
+
 echo -e "$Green Delete k8s deployment & service$Color_Off"
 kubectl delete -k ./
-kubectl delete -f influxDB/influxdb.yml
-
-# remove ingress secret
-echo -e "\n$Green Delete ingress secret$Color_Off"
+kubectl delete -f secret.yml
 kubectl delete secrets/ingress-secret
-# kubectl delete secrets/ca-secret
+kubectl delete configmap/grafana-config
 
-# remove ingress controller
-# echo -e "\n$Green Remove Nginx Ingress Controller$Color_Off"
-# kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
+####################################################################
+#                           REMOVING DOCKER PROPERTIES             #
+####################################################################
 
-# remove all images
-echo -e "\n$Green Remove docker images$Color_Off"
+# [CONNECT DOCKER TO MINIKUBE]
+eval $(minikube -p minikube docker-env)
+
+echo -e "\n$Green Remove docker images & containers$Color_Off"
 docker image prune -a --force
 docker container prune -f
 
