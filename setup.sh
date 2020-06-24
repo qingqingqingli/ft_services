@@ -11,41 +11,60 @@ Purple='\033[0;35m'       # Purple
 Cyan='\033[0;36m'         # Cyan
 White='\033[0;37m'        # White
 
-# echo -e "$Purple PROCESS STARTS\n$Color_Off"
+####################################################################
+#                           MINIKUBE SETUP                         #
+####################################################################
+
+# [macOS]
 # minikube delete
 # rm -rf /Volumes/Storage/goinfre/qli/minikube/.minikube
 # mkdir -p ~/goinfre/minikube
 # chmod +x ~/goinfre/minikube
 # export MINIKUBE_HOME=/Volumes/Storage/goinfre/qli/minikube/
 
-# extend nodeport range at startup
+# [LINUX - at root]
+# minikube delete
+
+# [MINIKUBE START - need to change nodeport]
 # minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true
 
-# replace all MINIKUBE_IP
+# [REPLACE MINIKUBE_IP TO ACTUAL IP]
+# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 
+# [REPLACE ACTUAL IP TO MINIKUBE_IP]
+# sed -i "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
+
+# [ADD ALL MINIKUBE ADDONS]
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
-minikube addons enable ingress
-minikube addons enable dashboard
-minikube addons enable metrics-server
+# minikube addons enable ingress
+# minikube addons enable dashboard
+# minikube addons enable metrics-server
 # sleep 60
 
-# connect docker to minikube
-# echo -e "$Purple connect docker to minikube$Color_Off"
-eval $(minikube -p minikube docker-env)
+# [CONNECT DOCKER TO MINIKUBE]
+# eval $(minikube -p minikube docker-env)
 
-echo -e "\n$Purple Build Docker Image$Color_Off"
-docker build -t nginx nginx/
+####################################################################
+#                           BUILD CUSTOM IMAGES                    #
+####################################################################
 
-echo -e "\n$Purple Create ingress secrets$Color_Off"
-kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
-kubectl apply -f secret.yml 
+# echo -e "\n$Purple Build Docker Image$Color_Off"
+# docker build -t nginx nginx/
 
-echo -e "\n$Purple Create k8s objects$Color_Off"
-kubectl apply -k ./
+####################################################################
+#                           BUILD K8S OBJECTS                      #
+####################################################################
 
-# sleep 45
-# kubectl apply -f influxDB/influxdb.yml
+# echo -e "\n$Purple Create ingress secrets$Color_Off"
+# kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
+# kubectl apply -f secret.yml 
 
+# echo -e "\n$Purple Create k8s objects$Color_Off"
+# kubectl apply -k ./
+
+####################################################################
+#                           DISPLAY OBJECTS & LINKS                #
+####################################################################
 echo -e "\n$Purple\nDisplay all k8s objects$Color_Off"
 kubectl get all
 
@@ -58,6 +77,9 @@ echo -e "Link to Grafana: http://$(minikube ip):3000"
 echo -e "\n$Purple\nDisplay dashboard$Color_Off"
 minikube dashboard
 
+####################################################################
+#                           BACKUP COMMANDS                        #
+####################################################################
 # check for container logs
 # kubectl logs -f container_name
 

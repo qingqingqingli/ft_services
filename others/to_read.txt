@@ -1,2 +1,0 @@
-[Define a command and arguments for a container]
-https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#:~:text=When%20you%20create%20a%20Pod%2C%20you%20can%20define%20a%20command,field%20in%20the%20configuration%20file.&text=The%20command%20and%20arguments%20that%20you%20define%20in%20the%20configuration,provided%20by%20the%20container%20image.

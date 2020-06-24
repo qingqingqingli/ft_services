@@ -1,9 +1,7 @@
 resources:
-  - nginx/nginx_deployment.yml
-  - nginx/nginx_service.yml
-  - mysql/mysql-deployment.yml
-  - mysql/mysql-secret.yml
-  - wordpress/wordpress-deployment.yml
+  - nginx/nginx.yml
+  - mysql/mysql.yml
+  - wordpress/wordpress.yml
   - ingress/nginx_ingress_controller.yml
   - phpmyadmin/phpmyadmin.yml
   - influxDB/influxdb.yml
