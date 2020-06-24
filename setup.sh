@@ -60,14 +60,15 @@ kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingr
 kubectl apply -f secret.yml 
 
 # create configmap
-kubectl create configmap grafana-config --from-file=grafana/grafana_datasource.yml \
---from-file=grafana/grafana_dashboard_provider.yml \
---from-file=grafana/influxdb_dashboard.json \
---from-file=grafana/mysql_dashboard.json \
---from-file=grafana/grafana_dashboard.json \
---from-file=grafana/nginx_dashboard.json \
---from-file=grafana/phpmyadmin_dashboard.json \
---from-file=grafana/wordpress_dashboard.json
+kubectl create configmap grafana-config \
+--from-file=grafana_datasource.yml=grafana/grafana_datasource.yml \
+--from-file=grafana_dashboard_provider.yml=grafana/grafana_dashboard_provider.yml \
+--from-file=influxdb_dashboard.json=grafana/influxdb_dashboard.json \
+--from-file=mysql_dashboard.json=grafana/mysql_dashboard.json \
+--from-file=grafana_dashboard.json=grafana/grafana_dashboard.json \
+--from-file=nginx_dashboard.json=grafana/nginx_dashboard.json \
+--from-file=phpmyadmin_dashboard.json=grafana/phpmyadmin_dashboard.json \
+--from-file=wordpress_dashboard.json=grafana/wordpress_dashboard.json
 
 # echo -e "\n$Purple Create k8s objects$Color_Off"
 kubectl apply -k ./
