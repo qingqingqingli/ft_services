@@ -39,16 +39,16 @@ echo -e "$Purple Change MINIKUBE_IP$Color_Off"
 
 # Linux
 # [REPLACE MINIKUBE_IP TO ACTUAL IP]
-sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 # [REPLACE ACTUAL IP TO MINIKUBE_IP]
 # sed -i "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
 
 # [ADD ALL MINIKUBE ADDONS]
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
-minikube addons enable ingress
-minikube addons enable dashboard
-minikube addons enable metrics-server
-sleep 30
+# minikube addons enable ingress
+# minikube addons enable dashboard
+# minikube addons enable metrics-server
+# sleep 30
 
 # [CONNECT DOCKER TO MINIKUBE]
 eval $(minikube -p minikube docker-env)
