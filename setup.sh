@@ -26,13 +26,19 @@ White='\033[0;37m'        # White
 # minikube delete
 
 # [MINIKUBE START - need to change nodeport]
-# minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true
+# minikube start --driver=virtualbox --bootstrapper=kubeadm --extra-config=apiserver.service-node-port-range=1-65535
 
+# LINUX
 # [REPLACE MINIKUBE_IP TO ACTUAL IP]
-sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
-
+# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 # [REPLACE ACTUAL IP TO MINIKUBE_IP]
 # sed -i "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
+
+# MacOS
+# [REPLACE MINIKUBE_IP TO ACTUAL IP]
+# sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+# [REPLACE ACTUAL IP TO MINIKUBE_IP]
+# sed -i "" "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
 
 # [ADD ALL MINIKUBE ADDONS]
 echo -e "$Purple Add ingress & dashboard$Color_Off"
@@ -43,6 +49,16 @@ sleep 60
 
 # [CONNECT DOCKER TO MINIKUBE]
 eval $(minikube -p minikube docker-env)
+
+####################################################################
+#                           INSTALL METALLB                        #
+####################################################################
+
+# [DEPLOY MANIFEST]
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+# [FIRST TIME CREATION]
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
 ####################################################################
 #                           BUILD CUSTOM IMAGES                    #

@@ -1,4 +1,5 @@
 resources:
+  - metalLB/metalLB_config.yml
   - nginx/nginx.yml
   - mysql/mysql.yml
   - wordpress/wordpress.yml
