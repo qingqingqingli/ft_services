@@ -1,18 +1,37 @@
+# NODEPORT
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata: 
+#   name: phpmyadmin
+#   labels:
+#     app: phpmyadmin
+# spec:
+#   type: NodePort
+#   selector:
+#     app: phpmyadmin
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       nodePort: 5000
+
+# METALLB
 ---
 apiVersion: v1
 kind: Service
-metadata: 
+metadata:
   name: phpmyadmin
   labels:
     app: phpmyadmin
 spec:
-  type: NodePort
   selector:
     app: phpmyadmin
   ports:
-    - protocol: TCP
-      port: 80
-      nodePort: 5000
+    - name: http
+      port: 5000
+      targetPort: 80
+      protocol: TCP
+  type: LoadBalancer
 
 ---
 apiVersion: apps/v1

@@ -1,19 +1,4 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: wordpress
-  labels:
-    app: wordpress
-spec:
-  ports:
-    - port: 80
-      nodePort: 5050
-  selector:
-    app: wordpress
-    tier: frontend
-  type: NodePort
-
+# NODEPORT
 # ---
 # apiVersion: v1
 # kind: Service
@@ -22,12 +7,32 @@ spec:
 #   labels:
 #     app: wordpress
 # spec:
-#   selector:
-#     app: wordpress
 #   ports:
 #     - port: 80
-#       targetPort: 5050
-#   type: LoadBalancer
+#       nodePort: 5050
+#   selector:
+#     app: wordpress
+#     tier: frontend
+#   type: NodePort
+
+# METALLB
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  selector:
+    app: wordpress
+    tier: frontend
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5050
+      targetPort: 80
+  type: LoadBalancer
 
 ---
 apiVersion: apps/v1

@@ -111,7 +111,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "wordpress",
+        "title": "WordPress",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -161,7 +161,7 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "wordpress",
+    "title": "WordPress",
     "uid": "isymqLZGz",
     "version": 1
   }

@@ -111,7 +111,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "nginx",
+        "title": "Nginx",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -161,7 +161,7 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "nginx",
+    "title": "Nginx",
     "uid": "97shjYWMk",
     "version": 1
   }

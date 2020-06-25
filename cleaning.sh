@@ -20,6 +20,9 @@ echo -e "$Green Cleaning starts!\n$Color_Off"
 #                           REMOVING K8S OBJECTS                   #
 ####################################################################
 
+# [CONNECT DOCKER TO MINIKUBE]
+eval $(minikube -p minikube docker-env)
+
 echo -e "$Green Delete k8s deployment & service$Color_Off"
 kubectl delete -k ./
 kubectl delete -f secret.yml

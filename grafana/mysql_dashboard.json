@@ -111,7 +111,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "mysql",
+      "title": "MySQL",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -161,7 +161,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "mysql",
+  "title": "MySQL",
   "uid": "jdEIREZMz",
   "version": 1
 }

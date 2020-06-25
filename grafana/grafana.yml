@@ -1,3 +1,20 @@
+# NODEPORT
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: grafana
+#   labels:
+#     app: grafana
+# spec:
+#   ports:
+#   - port: 3000
+#     nodePort: 3000
+#   selector:
+#     app: grafana
+#   type: NodePort
+
+# METALLB
 ---
 apiVersion: v1
 kind: Service
@@ -6,12 +23,14 @@ metadata:
   labels:
     app: grafana
 spec:
-  ports:
-  - port: 3000
-    nodePort: 3000
   selector:
     app: grafana
-  type: NodePort
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+  type: LoadBalancer
 
 ---
 apiVersion: apps/v1

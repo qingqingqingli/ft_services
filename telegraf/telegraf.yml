@@ -1,3 +1,21 @@
+# NODEPORT
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: telegraf
+#   labels:
+#     app: telegraf
+# spec:
+#   ports:
+#     - port: 8125
+#       nodePort: 8125
+#       protocol: UDP
+#   selector:
+#     app: telegraf
+#   type: NodePort
+
+# CLUSTER_IP
 ---
 apiVersion: v1
 kind: Service
@@ -8,11 +26,10 @@ metadata:
 spec:
   ports:
     - port: 8125
-      nodePort: 8125
       protocol: UDP
   selector:
     app: telegraf
-  type: NodePort
+  type: ClusterIP
 
 ---
 apiVersion: apps/v1

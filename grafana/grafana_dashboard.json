@@ -111,7 +111,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "grafana",
+        "title": "Grafana",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -161,7 +161,7 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "grafana",
+    "title": "Grafana",
     "uid": "s51tjYWMk",
     "version": 1
   }

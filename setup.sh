@@ -27,7 +27,9 @@ White='\033[0;37m'        # White
 
 # [MINIKUBE START - need to change nodeport]
 # minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true
-# minikube start --driver=virtualbox --bootstrapper=kubeadm --extra-config=apiserver.service-node-port-range=1-65535
+# minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm --extra-config=apiserver.service-node-port-range=1-65535
+
+echo -e "$Purple Change MINIKUBE_IP$Color_Off"
 
 # MacOS
 # [REPLACE MINIKUBE_IP TO ACTUAL IP]
@@ -37,24 +39,25 @@ White='\033[0;37m'        # White
 
 # Linux
 # [REPLACE MINIKUBE_IP TO ACTUAL IP]
-# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 # [REPLACE ACTUAL IP TO MINIKUBE_IP]
 # sed -i "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
 
 # [ADD ALL MINIKUBE ADDONS]
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
-# minikube addons enable ingress
-# minikube addons enable dashboard
-# minikube addons enable metrics-server
-# sleep 60
+minikube addons enable ingress
+minikube addons enable dashboard
+minikube addons enable metrics-server
+sleep 30
 
 # [CONNECT DOCKER TO MINIKUBE]
-# eval $(minikube -p minikube docker-env)
+eval $(minikube -p minikube docker-env)
 
 ####################################################################
 #                           DEPLOY METALLB                         #
 ####################################################################
 
+echo -e "$Purple Add metalLB$Color_Off"
 # [DEPLOY THE MANIFEST]
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
@@ -72,6 +75,8 @@ docker build -t nginx nginx/
 ####################################################################
 #                           BUILD K8S OBJECTS                      #
 ####################################################################
+
+echo -e "\n$Purple Build K8S Objects$Color_Off"
 
 # echo -e "\n$Purple Create ingress secrets$Color_Off"
 kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
