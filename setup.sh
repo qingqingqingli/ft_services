@@ -29,20 +29,20 @@ White='\033[0;37m'        # White
 # minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true
 
 # [REPLACE MINIKUBE_IP TO ACTUAL IP]
-# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 
 # [REPLACE ACTUAL IP TO MINIKUBE_IP]
 # sed -i "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
 
 # [ADD ALL MINIKUBE ADDONS]
-# echo -e "$Purple Add ingress & dashboard$Color_Off"
-# minikube addons enable ingress
-# minikube addons enable dashboard
-# minikube addons enable metrics-server
-# sleep 60
+echo -e "$Purple Add ingress & dashboard$Color_Off"
+minikube addons enable ingress
+minikube addons enable dashboard
+minikube addons enable metrics-server
+sleep 60
 
 # [CONNECT DOCKER TO MINIKUBE]
-# eval $(minikube -p minikube docker-env)
+eval $(minikube -p minikube docker-env)
 
 ####################################################################
 #                           BUILD CUSTOM IMAGES                    #
