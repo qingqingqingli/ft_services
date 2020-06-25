@@ -1,4 +1,3 @@
-# this version does not create PV for wordpress
 ---
 apiVersion: v1
 kind: Service
@@ -15,8 +14,23 @@ spec:
     tier: frontend
   type: NodePort
 
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: wordpress
+#   labels:
+#     app: wordpress
+# spec:
+#   selector:
+#     app: wordpress
+#   ports:
+#     - port: 80
+#       targetPort: 5050
+#   type: LoadBalancer
+
 ---
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress

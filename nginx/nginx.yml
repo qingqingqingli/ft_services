@@ -17,6 +17,23 @@ spec:
   selector:
     app: nginx
 
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nginx
+#   labels:
+#     app: wordpress
+# spec:
+#   selector:
+#     app: nginx
+#   ports:
+#     - name: http
+#       protocol: TCP
+#       port: 80
+#       targetPort: 80
+#   type: LoadBalancer
+
 ---
 apiVersion: apps/v1
 kind: Deployment

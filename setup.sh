@@ -26,13 +26,8 @@ White='\033[0;37m'        # White
 # minikube delete
 
 # [MINIKUBE START - need to change nodeport]
+# minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true
 # minikube start --driver=virtualbox --bootstrapper=kubeadm --extra-config=apiserver.service-node-port-range=1-65535
-
-# LINUX
-# [REPLACE MINIKUBE_IP TO ACTUAL IP]
-# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
-# [REPLACE ACTUAL IP TO MINIKUBE_IP]
-# sed -i "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
 
 # MacOS
 # [REPLACE MINIKUBE_IP TO ACTUAL IP]
@@ -40,25 +35,32 @@ White='\033[0;37m'        # White
 # [REPLACE ACTUAL IP TO MINIKUBE_IP]
 # sed -i "" "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
 
+# Linux
+# [REPLACE MINIKUBE_IP TO ACTUAL IP]
+# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+# [REPLACE ACTUAL IP TO MINIKUBE_IP]
+# sed -i "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
+
 # [ADD ALL MINIKUBE ADDONS]
-echo -e "$Purple Add ingress & dashboard$Color_Off"
-minikube addons enable ingress
-minikube addons enable dashboard
-minikube addons enable metrics-server
-sleep 60
+# echo -e "$Purple Add ingress & dashboard$Color_Off"
+# minikube addons enable ingress
+# minikube addons enable dashboard
+# minikube addons enable metrics-server
+# sleep 60
 
 # [CONNECT DOCKER TO MINIKUBE]
-eval $(minikube -p minikube docker-env)
+# eval $(minikube -p minikube docker-env)
 
 ####################################################################
-#                           INSTALL METALLB                        #
+#                           DEPLOY METALLB                         #
 ####################################################################
 
-# [DEPLOY MANIFEST]
+# [DEPLOY THE MANIFEST]
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-# [FIRST TIME CREATION]
+# [ONLY ON FIRST INSTALL]
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+
 
 ####################################################################
 #                           BUILD CUSTOM IMAGES                    #
@@ -107,6 +109,17 @@ minikube dashboard
 ####################################################################
 #                           BACKUP COMMANDS                        #
 ####################################################################
+
+# Before running Docker, run the commands below
+
+# mkdir -p ~/goinfre/docker
+# rm -rf ~/Library/Containers/com.docker.docker
+# ln -s ~/goinfre/docker ~/Library/Containers/com.docker.docker
+
+# clearhome
+# alias clearhome="echo -n \"Available before:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4; unsetopt nomatch; rm -Rf ~/Library/*.42_cache_bak*; rm -Rf ~/*.42_cache_bak_*; setopt nomatch; echo -n \"Available after:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4;"
+# clearhome
+
 # check for container logs
 # kubectl logs -f container_name
 
