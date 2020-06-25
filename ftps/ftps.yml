@@ -1,0 +1,66 @@
+# METALLB
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftps
+  labels:
+    app: ftps
+spec:
+  selector:
+    app: ftps
+  ports:
+    - name: http
+      port: 21
+      targetPort: 5800
+      protocol: TCP
+  type: LoadBalancer
+
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: ftps-pv-claim
+#   labels:
+#     app: ftps
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ftps
+  labels:
+    app: ftps
+spec:
+  selector:
+    matchLabels:
+      app: ftps
+  template:
+    metadata:
+      labels:
+        app: ftps
+    spec:
+      containers:
+      - image: jlesage/filezilla
+        name: ftps
+        env:
+        - name: SECURE_CONNECTION
+          value: "1"
+        - name: VNC_PASSWORD
+          value: test
+        ports:
+        - containerPort: 5800
+          name: ftps
+      #   volumeMounts:
+      #   - name: ftps-persistent-storage
+      #     mountPath: /var/lib/ftps
+      # volumes:
+      # - name: ftps-persistent-storage
+      #   persistentVolumeClaim:
+      #     claimName: ftps-pv-claim
