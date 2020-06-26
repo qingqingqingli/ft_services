@@ -50,12 +50,12 @@ spec:
         persistentVolumeClaim:
           claimName: ftps-pv-claim
       containers:
-      - name: my-ftp-container
+      - name: ftps
         image: fauria/vsftpd
         ports:
         - containerPort: 21
           protocol: TCP
-          name: "ftp-server"
+          name: ftps
         volumeMounts:
         - mountPath: "/home/vsftpd"
           name: ftps-pv-storage
