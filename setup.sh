@@ -48,7 +48,7 @@ echo -e "$Purple Change MINIKUBE_IP$Color_Off"
 # minikube addons enable ingress
 # minikube addons enable dashboard
 # minikube addons enable metrics-server
-# sleep 30
+# sleep 15
 
 # [CONNECT DOCKER TO MINIKUBE]
 eval $(minikube -p minikube docker-env)
@@ -59,10 +59,10 @@ eval $(minikube -p minikube docker-env)
 
 echo -e "$Purple Add metalLB$Color_Off"
 # [DEPLOY THE MANIFEST]
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-# [ONLY ON FIRST INSTALL]
-kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+# # [ONLY ON FIRST INSTALL]
+# kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
 
 ####################################################################
@@ -102,14 +102,8 @@ kubectl apply -k ./
 echo -e "\n$Purple\nDisplay all k8s objects$Color_Off"
 kubectl get all
 
-echo -e "\n$Purple\nAccess to services: \n$Color_Off"
-echo -e "Link to Nginx: https://$(minikube ip)"
-echo -e "Link to Wordpress: http://$(minikube ip):5050"
-echo -e "Link to phpMyAdmin: http://$(minikube ip):5000"
-echo -e "Link to Grafana: http://$(minikube ip):3000"
-
 echo -e "\n$Purple\nDisplay dashboard$Color_Off"
-minikube dashboard
+# minikube dashboard
 
 ####################################################################
 #                           BACKUP COMMANDS                        #
@@ -124,6 +118,13 @@ minikube dashboard
 # clearhome
 # alias clearhome="echo -n \"Available before:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4; unsetopt nomatch; rm -Rf ~/Library/*.42_cache_bak*; rm -Rf ~/*.42_cache_bak_*; setopt nomatch; echo -n \"Available after:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4;"
 # clearhome
+
+# [ACCESS TO SERVICES]
+# echo -e "\n$Purple\nAccess to services: \n$Color_Off"
+# echo -e "Link to Nginx: https://$(minikube ip)"
+# echo -e "Link to Wordpress: http://$(minikube ip):5050"
+# echo -e "Link to phpMyAdmin: http://$(minikube ip):5000"
+# echo -e "Link to Grafana: http://$(minikube ip):3000"
 
 # check for container logs
 # kubectl logs -f container_name

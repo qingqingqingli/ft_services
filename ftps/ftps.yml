@@ -1,4 +1,4 @@
-# METALLB
+
 ---
 apiVersion: v1
 kind: Service
@@ -7,28 +7,26 @@ metadata:
   labels:
     app: ftps
 spec:
+  type: LoadBalancer
+  ports:
+    - port: 21
+      targetPort: 21
   selector:
     app: ftps
-  ports:
-    - name: http
-      port: 21
-      targetPort: 5800
-      protocol: TCP
-  type: LoadBalancer
 
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: ftps-pv-claim
-#   labels:
-#     app: ftps
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 5Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ftps-pv-claim
+  labels:
+    app: ftps
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
 
 ---
 apiVersion: apps/v1
@@ -38,6 +36,7 @@ metadata:
   labels:
     app: ftps
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: ftps
@@ -46,21 +45,28 @@ spec:
       labels:
         app: ftps
     spec:
+      volumes:
+      - name: ftps-pv-storage
+        persistentVolumeClaim:
+          claimName: ftps-pv-claim
       containers:
-      - image: jlesage/filezilla
-        name: ftps
-        env:
-        - name: SECURE_CONNECTION
-          value: "1"
-        - name: VNC_PASSWORD
-          value: test
+      - name: my-ftp-container
+        image: fauria/vsftpd
         ports:
-        - containerPort: 5800
-          name: ftps
-      #   volumeMounts:
-      #   - name: ftps-persistent-storage
-      #     mountPath: /var/lib/ftps
-      # volumes:
-      # - name: ftps-persistent-storage
-      #   persistentVolumeClaim:
-      #     claimName: ftps-pv-claim
+        - containerPort: 21
+          protocol: TCP
+          name: "ftp-server"
+        volumeMounts:
+        - mountPath: "/home/vsftpd"
+          name: ftps-pv-storage
+        env:
+        - name: FTP_USER
+          value: "root"
+        - name: FTP_PASS
+          value: "root"
+        #- name: PASV_ADDRESS
+        #  value: "127.0.0.1"
+        #- name: PASV_MIN_PORT
+        #  value: "21100"
+        #- name: PASV_MAX_PORT
+        #  value: "21110"

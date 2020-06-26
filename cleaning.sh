@@ -34,10 +34,10 @@ kubectl delete configmap/grafana-config
 ####################################################################
 
 # [DEPLOY MANIFEST]
-kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
-kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-# [FIRST TIME CREATION]
-kubectl delete secret -n metallb-system memberlist
+# kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+# kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+# # [FIRST TIME CREATION]
+# kubectl delete secret -n metallb-system memberlist
 
 ####################################################################
 #                           REMOVING DOCKER PROPERTIES             #

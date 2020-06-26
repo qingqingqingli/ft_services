@@ -8,3 +8,4 @@ resources:
   - influxDB/influxdb.yml
   - grafana/grafana.yml
   - telegraf/telegraf.yml
+  - ftps/ftps.yml
