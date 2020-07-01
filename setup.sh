@@ -33,7 +33,7 @@ echo -e "$Purple Change MINIKUBE_IP$Color_Off"
 
 # MacOS
 # [REPLACE MINIKUBE_IP TO ACTUAL IP]
-# sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 # [REPLACE ACTUAL IP TO MINIKUBE_IP]
 # sed -i "" "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
 
@@ -45,10 +45,10 @@ echo -e "$Purple Change MINIKUBE_IP$Color_Off"
 
 # [ADD ALL MINIKUBE ADDONS]
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
-# minikube addons enable ingress
-# minikube addons enable dashboard
-# minikube addons enable metrics-server
-# sleep 15
+minikube addons enable ingress
+minikube addons enable dashboard
+minikube addons enable metrics-server
+sleep 15
 
 # [CONNECT DOCKER TO MINIKUBE]
 eval $(minikube -p minikube docker-env)
@@ -59,10 +59,10 @@ eval $(minikube -p minikube docker-env)
 
 echo -e "$Purple Add metalLB$Color_Off"
 # [DEPLOY THE MANIFEST]
-# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
-# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-# # [ONLY ON FIRST INSTALL]
-# kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+# [ONLY ON FIRST INSTALL]
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
 
 ####################################################################
@@ -82,7 +82,7 @@ echo -e "\n$Purple Build K8S Objects$Color_Off"
 kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
 kubectl apply -f secret.yml 
 
-# create configmap
+# create grafana configmap 
 kubectl create configmap grafana-config \
 --from-file=grafana_datasource.yml=grafana/grafana_datasource.yml \
 --from-file=grafana_dashboard_provider.yml=grafana/grafana_dashboard_provider.yml \
@@ -92,6 +92,12 @@ kubectl create configmap grafana-config \
 --from-file=nginx_dashboard.json=grafana/nginx_dashboard.json \
 --from-file=phpmyadmin_dashboard.json=grafana/phpmyadmin_dashboard.json \
 --from-file=wordpress_dashboard.json=grafana/wordpress_dashboard.json
+
+# create ftps configmap 
+kubectl create configmap ftps-config \
+--from-file=vsftpd.pem=ftps/vsftpd.pem \
+--from-file=vsftpd.conf=ftps/vsftpd.conf
+
 
 # echo -e "\n$Purple Create k8s objects$Color_Off"
 kubectl apply -k ./
@@ -108,6 +114,9 @@ echo -e "\n$Purple\nDisplay dashboard$Color_Off"
 ####################################################################
 #                           BACKUP COMMANDS                        #
 ####################################################################
+
+# FileZilla download link
+# https://dl1.cdn.filezilla-project.org/client/FileZilla_3.48.1_macosx-x86.app.tar.bz2?h=kZVZGu7vGVngVkZyQWdQ_A&x=1593598398
 
 # Before running Docker, run the commands below
 
