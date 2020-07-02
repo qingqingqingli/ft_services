@@ -45,13 +45,13 @@ sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 
 # [ADD ALL MINIKUBE ADDONS]
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
-minikube addons enable ingress
-minikube addons enable dashboard
-minikube addons enable metrics-server
-sleep 15
+# minikube addons enable ingress
+# minikube addons enable dashboard
+# minikube addons enable metrics-server
+# sleep 15
 
-# [CONNECT DOCKER TO MINIKUBE]
-eval $(minikube -p minikube docker-env)
+# # [CONNECT DOCKER TO MINIKUBE]
+# eval $(minikube -p minikube docker-env)
 
 ####################################################################
 #                           DEPLOY METALLB                         #
@@ -59,10 +59,10 @@ eval $(minikube -p minikube docker-env)
 
 echo -e "$Purple Add metalLB$Color_Off"
 # [DEPLOY THE MANIFEST]
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-# [ONLY ON FIRST INSTALL]
-kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+# # [ONLY ON FIRST INSTALL]
+# kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
 
 ####################################################################
@@ -79,7 +79,7 @@ docker build -t nginx nginx/
 echo -e "\n$Purple Build K8S Objects$Color_Off"
 
 # echo -e "\n$Purple Create ingress secrets$Color_Off"
-kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
+# kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
 kubectl apply -f secret.yml 
 
 # create grafana configmap 
@@ -94,9 +94,9 @@ kubectl create configmap grafana-config \
 --from-file=wordpress_dashboard.json=grafana/wordpress_dashboard.json
 
 # create ftps configmap 
-kubectl create configmap ftps-config \
---from-file=vsftpd.pem=ftps/vsftpd.pem \
---from-file=vsftpd.conf=ftps/vsftpd.conf
+# kubectl create configmap ftps-config \
+# --from-file=vsftpd.pem=ftps/vsftpd.pem \
+# --from-file=vsftpd.conf=ftps/vsftpd.conf
 
 
 # echo -e "\n$Purple Create k8s objects$Color_Off"

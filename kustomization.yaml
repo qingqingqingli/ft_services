@@ -3,7 +3,7 @@ resources:
   - nginx/nginx.yml
   - mysql/mysql.yml
   - wordpress/wordpress.yml
-  - ingress/nginx_ingress_controller.yml
+  # - ingress/nginx_ingress_controller.yml
   - phpmyadmin/phpmyadmin.yml
   - influxDB/influxdb.yml
   - grafana/grafana.yml

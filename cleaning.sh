@@ -26,7 +26,7 @@ eval $(minikube -p minikube docker-env)
 echo -e "$Green Delete k8s deployment & service$Color_Off"
 kubectl delete -k ./
 kubectl delete -f secret.yml
-kubectl delete secrets/ingress-secret
+# kubectl delete secrets/ingress-secret
 kubectl delete configmap/grafana-config
 
 ####################################################################

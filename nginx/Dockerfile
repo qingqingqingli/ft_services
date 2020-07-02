@@ -8,7 +8,7 @@ LABEL maintainer="qli"
 RUN apk update
 
 # install nginx openssl
-RUN apk add nginx openssl && rm -f /var/cache/apk/*
+RUN apk add nginx openssl openssh && rm -f /var/cache/apk/*
 
 # create user & give access
 RUN adduser -D -g 'www' www
@@ -37,9 +37,18 @@ RUN mkdir -p /bin/bash
 RUN chmod -R 777 /bin/bash
 RUN chown -R www:www /bin/bash
 
+# add user foor ssh
+RUN addgroup ssh && adduser -DH -G ssh test && \
+	passwd test -d 'test'
+
 # expose ports
-EXPOSE 80 443
+EXPOSE 80 443 4500
 
 # start nginx
 RUN mkdir -p /run/nginx/
+# COPY srcs/start_nginx.sh /bin/bash/start_nginx.sh
+# RUN chmod +x /bin/bash/start_nginx.sh
+# CMD ["bin/sh", "/bin/bash/start_nginx.sh"]
+
 CMD ["nginx", "-g", "daemon off;"]
+

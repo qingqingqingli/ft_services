@@ -38,6 +38,10 @@ spec:
       port: 443
       targetPort: 443
       protocol: TCP
+    - name: ssh
+      port: 4500
+      targetPort: 4500
+      protocol: TCP
   type: LoadBalancer
 
 ---
