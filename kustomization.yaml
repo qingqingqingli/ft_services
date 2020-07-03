@@ -1,10 +1,10 @@
 resources:
-  - metalLB/metalLB_config.yml
-  - nginx/nginx.yml
-  - mysql/mysql.yml
-  - wordpress/wordpress.yml
-  - phpmyadmin/phpmyadmin.yml
-  - influxDB/influxdb.yml
-  - grafana/grafana.yml
-  - telegraf/telegraf.yml
-  - ftps/ftps.yml
+  # - metalLB/metalLB_config.yml
+  # - nginx/nginx.yml
+  # - mysql/mysql.yml
+  # - wordpress/wordpress.yml
+  # - phpmyadmin/phpmyadmin.yml
+  # - influxDB/influxdb.yml
+  # - grafana/grafana.yml
+  # - telegraf/telegraf.yml
+  # - ftps/ftps.yml

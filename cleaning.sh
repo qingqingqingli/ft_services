@@ -24,9 +24,17 @@ echo -e "$Green Cleaning starts!\n$Color_Off"
 eval $(minikube -p minikube docker-env)
 
 echo -e "$Green Delete k8s deployment & service$Color_Off"
-kubectl delete -k ./
+kubectl delete -f nginx/nginx.yml
+kubectl delete -f ftps/ftps.yml
+kubectl delete -f mysql/mysql.yml
+kubectl delete -f wordpress/wordpress.yml
+kubectl delete -f phpmyadmin/phpmyadmin.yml
+kubectl delete -f influxDB/influxdb.yml
+kubectl delete -f grafana/grafana.yml
+kubectl delete -f telegraf/telegraf.yml
+
 kubectl delete -f secret.yml
-# kubectl delete secrets/ingress-secret
+
 kubectl delete configmap/grafana-config
 
 ####################################################################
@@ -36,7 +44,6 @@ kubectl delete configmap/grafana-config
 # [DEPLOY MANIFEST]
 # kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
 # kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-# # [FIRST TIME CREATION]
 # kubectl delete secret -n metallb-system memberlist
 
 ####################################################################
@@ -47,7 +54,7 @@ kubectl delete configmap/grafana-config
 eval $(minikube -p minikube docker-env)
 
 echo -e "\n$Green Remove docker images & containers$Color_Off"
-docker image prune -a --force
 docker container prune -f
+docker image prune -a --force
 
 echo -e "\n$Green Cleaning finishes!$Color_Off"
