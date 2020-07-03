@@ -46,24 +46,24 @@ sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 # [ADD ALL MINIKUBE ADDONS]
 # echo -e "$Purple Add ingress & dashboard$Color_Off"
 # minikube addons enable ingress
-# minikube addons enable dashboard
-# minikube addons enable metrics-server
-# sleep 15
+minikube addons enable dashboard
+minikube addons enable metrics-server
+sleep 15
 
 # # [CONNECT DOCKER TO MINIKUBE]
-# eval $(minikube -p minikube docker-env)
+eval $(minikube -p minikube docker-env)
 
 ####################################################################
 #                           DEPLOY METALLB                         #
 ####################################################################
 
-echo -e "$Purple Add metalLB$Color_Off"
-# [DEPLOY THE MANIFEST]
+# echo -e "$Purple Add metalLB$Color_Off"
+# # [DEPLOY THE MANIFEST]
 # kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
 # kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
 # # [ONLY ON FIRST INSTALL]
 # kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-
+# kubectl apply -f metalLB/metalLB_config.yml
 
 ####################################################################
 #                           BUILD CUSTOM IMAGES                    #
@@ -71,6 +71,11 @@ echo -e "$Purple Add metalLB$Color_Off"
 
 echo -e "\n$Purple Build Docker Image$Color_Off"
 docker build -t nginx nginx/
+kubectl apply -f nginx/nginx.yml
+kubectl delete -f nginx/nginx.yml
+
+docker image prune -a --force
+docker container prune -f
 
 ####################################################################
 #                           BUILD K8S OBJECTS                      #
@@ -92,12 +97,6 @@ kubectl create configmap grafana-config \
 --from-file=nginx_dashboard.json=grafana/nginx_dashboard.json \
 --from-file=phpmyadmin_dashboard.json=grafana/phpmyadmin_dashboard.json \
 --from-file=wordpress_dashboard.json=grafana/wordpress_dashboard.json
-
-# create ftps configmap 
-# kubectl create configmap ftps-config \
-# --from-file=vsftpd.pem=ftps/vsftpd.pem \
-# --from-file=vsftpd.conf=ftps/vsftpd.conf
-
 
 # echo -e "\n$Purple Create k8s objects$Color_Off"
 kubectl apply -k ./

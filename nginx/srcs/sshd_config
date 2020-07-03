@@ -1,0 +1,4 @@
+Port 4500
+PermitRootLogin yes
+PasswordAuthentication yes
+Subsystem	sftp	/usr/lib/openssh/sftp-server

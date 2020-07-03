@@ -37,18 +37,17 @@ RUN mkdir -p /bin/bash
 RUN chmod -R 777 /bin/bash
 RUN chown -R www:www /bin/bash
 
-# add user foor ssh
+# add ssh user & config
 RUN addgroup ssh && adduser -DH -G ssh test && \
-	passwd test -d 'test'
+	echo "test:test" | chpasswd && \
+	ssh-keygen -A
+COPY srcs/sshd_config /etc/ssh/sshd_config
 
 # expose ports
 EXPOSE 80 443 4500
 
 # start nginx
 RUN mkdir -p /run/nginx/
-# COPY srcs/start_nginx.sh /bin/bash/start_nginx.sh
-# RUN chmod +x /bin/bash/start_nginx.sh
-# CMD ["bin/sh", "/bin/bash/start_nginx.sh"]
-
-CMD ["nginx", "-g", "daemon off;"]
-
+COPY srcs/start_nginx.sh /bin/bash/start_nginx.sh
+RUN chmod +x /bin/bash/start_nginx.sh
+CMD ["bin/sh", "/bin/bash/start_nginx.sh"]
