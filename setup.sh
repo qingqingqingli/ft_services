@@ -25,21 +25,20 @@ White='\033[0;37m'        # White
 
 # ---------------------------START MINIKUBE-------------------------
 # echo -e "$Purple START A MINIKUBE INSTANCE$Color_Off"
-# minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm \
-# --extra-config=apiserver.service-node-port-range=1-65535
+minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm \
+--extra-config=apiserver.service-node-port-range=1-65535
 
 # ---------------------------REPLACE MINIKUBE_IP--------------------
 echo -e "$Purple REPLACE MINIKUBE_IP$Color_Off"
 # MacOS
-sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+# sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 # Linux
-# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
 
 # ---------------------------ADD MINIKUBE ADDONS--------------------
 echo -e "$Purple ADD MINIKUBE ADDONS$Color_Off"
 minikube addons enable dashboard
 minikube addons enable metrics-server
-sleep 15
 
 # ---------------------------CONNECT MINIKUBE TO DOCKER-------------
 echo -e "$Purple CONNECT MINIKUBE TO DOCKER$Color_Off"
@@ -55,7 +54,6 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manife
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 kubectl apply -f metalLB/metalLB_config.yml
-sleep 15
 
 ####################################################################
 #                           DEPLOY SECRETS                         #
@@ -106,7 +104,13 @@ kubectl create configmap grafana-config \
 --from-file=phpmyadmin_dashboard.json=grafana/phpmyadmin_dashboard.json \
 --from-file=wordpress_dashboard.json=grafana/wordpress_dashboard.json
 
+docker build -t grafana grafana/
+
 kubectl apply -f grafana/grafana.yml
+kubectl delete -f grafana/grafana.yml
+
+docker container prune -f
+docker image prune -a --force
 
 # ---------------------------DEPLOY TELEGRAF------------------------
 echo -e "$Purple DEPLOY TELEGRAF$Color_Off"
