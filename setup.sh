@@ -95,11 +95,6 @@ docker build -t influxdb influxDB/
 
 kubectl apply -f influxDB/influxdb.yml
 
-kubectl delete -f influxDB/influxdb.yml
-
-docker container prune -f
-docker image prune -a --force
-
 # ---------------------------DEPLOY GRAFANA-------------------------
 echo -e "$Purple DEPLOY GRAFANA$Color_Off"
 
@@ -122,7 +117,17 @@ kubectl apply -f grafana/grafana.yml
 
 # ---------------------------DEPLOY TELEGRAF------------------------
 echo -e "$Purple DEPLOY TELEGRAF$Color_Off"
+
+docker build -t telegraf telegraf/
+
 kubectl apply -f telegraf/telegraf.yml
+kubectl apply -f telegraf/telegraf_config.yml
+
+kubectl delete -f telegraf/telegraf.yml
+kubectl delete -f telegraf/telegraf_config.yml
+
+docker container prune -f
+docker image prune -a --force
 
 ####################################################################
 #                           DISPLAY OBJECTS & LINKS                #
