@@ -90,23 +90,33 @@ kubectl apply -f phpmyadmin/phpmyadmin.yml
 
 # ---------------------------DEPLOY INFLUXDB------------------------
 echo -e "$Purple DEPLOY INFLUXDB$Color_Off"
+
+docker build -t influxdb influxDB/
+
 kubectl apply -f influxDB/influxdb.yml
+
+kubectl delete -f influxDB/influxdb.yml
+
+docker container prune -f
+docker image prune -a --force
 
 # ---------------------------DEPLOY GRAFANA-------------------------
 echo -e "$Purple DEPLOY GRAFANA$Color_Off"
 
 docker build -t grafana grafana/
 
+sleep 10
+
 kubectl create configmap grafana-config \
 --from-file=grafana_datasource.yml=grafana/grafana_datasource.yml \
 --from-file=grafana_dashboard_provider.yml=grafana/grafana_dashboard_provider.yml \
---from-file=influxdb_dashboard.json=grafana/influxdb_dashboard.json \
---from-file=mysql_dashboard.json=grafana/mysql_dashboard.json \
---from-file=grafana_dashboard.json=grafana/grafana_dashboard.json \
---from-file=nginx_dashboard.json=grafana/nginx_dashboard.json \
---from-file=phpmyadmin_dashboard.json=grafana/phpmyadmin_dashboard.json \
---from-file=wordpress_dashboard.json=grafana/wordpress_dashboard.json \
---from-file=ftps_dashboard.json=grafana/ftps_dashboard.json
+--from-file=influxdb_dashboard.json=grafana/dashboard/influxdb_dashboard.json \
+--from-file=mysql_dashboard.json=grafana/dashboard/mysql_dashboard.json \
+--from-file=grafana_dashboard.json=grafana/dashboard/grafana_dashboard.json \
+--from-file=nginx_dashboard.json=grafana/dashboard/nginx_dashboard.json \
+--from-file=phpmyadmin_dashboard.json=grafana/dashboard/phpmyadmin_dashboard.json \
+--from-file=wordpress_dashboard.json=grafana/dashboard/wordpress_dashboard.json \
+--from-file=ftps_dashboard.json=grafana/dashboard/ftps_dashboard.json
 
 kubectl apply -f grafana/grafana.yml
 
