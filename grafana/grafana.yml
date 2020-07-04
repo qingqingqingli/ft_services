@@ -88,6 +88,10 @@ spec:
           name: grafana-config-volume
           readOnly: true
           subPath: wordpress_dashboard.json
+        - mountPath: /var/lib/grafana/dashboards/ftps_dashboard.json
+          name: grafana-config-volume
+          readOnly: true
+          subPath: ftps_dashboard.json
         env:
         - name: GF_SECURITY_ADMIN_USER
           valueFrom:

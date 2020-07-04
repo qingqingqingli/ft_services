@@ -94,6 +94,9 @@ kubectl apply -f influxDB/influxdb.yml
 
 # ---------------------------DEPLOY GRAFANA-------------------------
 echo -e "$Purple DEPLOY GRAFANA$Color_Off"
+
+docker build -t grafana grafana/
+
 kubectl create configmap grafana-config \
 --from-file=grafana_datasource.yml=grafana/grafana_datasource.yml \
 --from-file=grafana_dashboard_provider.yml=grafana/grafana_dashboard_provider.yml \
@@ -102,15 +105,10 @@ kubectl create configmap grafana-config \
 --from-file=grafana_dashboard.json=grafana/grafana_dashboard.json \
 --from-file=nginx_dashboard.json=grafana/nginx_dashboard.json \
 --from-file=phpmyadmin_dashboard.json=grafana/phpmyadmin_dashboard.json \
---from-file=wordpress_dashboard.json=grafana/wordpress_dashboard.json
-
-docker build -t grafana grafana/
+--from-file=wordpress_dashboard.json=grafana/wordpress_dashboard.json \
+--from-file=ftps_dashboard.json=grafana/ftps_dashboard.json
 
 kubectl apply -f grafana/grafana.yml
-kubectl delete -f grafana/grafana.yml
-
-docker container prune -f
-docker image prune -a --force
 
 # ---------------------------DEPLOY TELEGRAF------------------------
 echo -e "$Purple DEPLOY TELEGRAF$Color_Off"
