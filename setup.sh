@@ -82,7 +82,15 @@ kubectl apply -f mysql/mysql.yml
 
 # ---------------------------DEPLOY WORDPRESS-----------------------
 echo -e "$Purple DEPLOY WORDPRESS$Color_Off"
+
+docker build -t wordpress wordpress/
+
 kubectl apply -f wordpress/wordpress.yml
+
+kubectl delete -f wordpress/wordpress.yml
+
+docker container prune -f
+docker image prune -a --force
 
 # ---------------------------DEPLOY PHPMYADMIN----------------------
 echo -e "$Purple DEPLOY PHPMYADMIN$Color_Off"
@@ -127,12 +135,6 @@ docker build -t telegraf telegraf/
 
 kubectl apply -f telegraf/telegraf_config.yml
 kubectl apply -f telegraf/telegraf.yml
-
-kubectl delete -f telegraf/telegraf.yml
-kubectl delete -f telegraf/telegraf_config.yml
-
-docker container prune -f
-docker image prune -a --force
 
 ####################################################################
 #                           DISPLAY OBJECTS & LINKS                #

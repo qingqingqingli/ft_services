@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-exec su-exec grafana grafana-server  						\
+exec su-exec grafana grafana-server  						            \
   --homepath="$GF_PATHS_HOME"                               \
   --config="$GF_PATHS_CONFIG"                               \
   --packaging=docker                                        \
