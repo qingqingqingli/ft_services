@@ -95,6 +95,11 @@ docker build -t influxdb influxDB/
 
 kubectl apply -f influxDB/influxdb.yml
 
+kubectl delete -f influxDB/influxdb.yml
+
+docker container prune -f
+docker image prune -a --force
+
 # ---------------------------DEPLOY GRAFANA-------------------------
 echo -e "$Purple DEPLOY GRAFANA$Color_Off"
 
