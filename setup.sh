@@ -120,8 +120,8 @@ echo -e "$Purple DEPLOY TELEGRAF$Color_Off"
 
 docker build -t telegraf telegraf/
 
-kubectl apply -f telegraf/telegraf.yml
 kubectl apply -f telegraf/telegraf_config.yml
+kubectl apply -f telegraf/telegraf.yml
 
 kubectl delete -f telegraf/telegraf.yml
 kubectl delete -f telegraf/telegraf_config.yml

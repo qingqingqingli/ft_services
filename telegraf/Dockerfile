@@ -1,30 +1,10 @@
-# FROM alpine:3.12
-
-# LABEL maintainer="qli"
-
-# ENV TELEGRAF_CONF=/etc/telegraf.conf \
-#     TELEGRAF_VERSION=1.14.5
-
-# RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-${TELEGRAF_VERSION}_linux_amd64.tar.gz \
-#     && tar xf telegraf-${TELEGRAF_VERSION}_linux_amd64.tar.gz \
-#     && rm telegraf-${TELEGRAF_VERSION}_linux_amd64.tar.gz
-
-# ADD srcs/telegraf.conf $TELEGRAF_CONF
-
-# COPY srcs/start_telegraf.sh /run.sh
-# RUN chmod +x /run.sh
-
-# EXPOSE 8125/udp
-
-# CMD ["/run.sh"]
-
 FROM alpine:3.9
 
 RUN echo 'hosts: files dns' >> /etc/nsswitch.conf
 RUN apk add --no-cache iputils ca-certificates net-snmp-tools procps lm_sensors tzdata && \
     update-ca-certificates
 
-ENV TELEGRAF_VERSION 1.12.6
+ENV TELEGRAF_VERSION 1.14.5
 
 RUN set -ex && \
     apk add --no-cache --virtual .build-deps wget gnupg tar && \
@@ -48,7 +28,7 @@ RUN set -ex && \
 
 EXPOSE 8125/udp 8092/udp 8094
 
-COPY srcs/entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["telegraf"]
