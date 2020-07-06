@@ -78,7 +78,16 @@ kubectl apply -f ftps/ftps.yml
 
 # ---------------------------DEPLOY MYSQL---------------------------
 echo -e "$Purple DEPLOY MYSQL$Color_Off"
+
+docker build -t mysql mysql/
+
 kubectl apply -f mysql/mysql.yml
+
+kubectl delete -f mysql/mysql.yml
+
+docker container prune -f
+docker image prune -a --force
+
 
 # ---------------------------DEPLOY WORDPRESS-----------------------
 echo -e "$Purple DEPLOY WORDPRESS$Color_Off"
