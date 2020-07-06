@@ -1,20 +1,3 @@
-# NODEPORT
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: wordpress
-#   labels:
-#     app: wordpress
-# spec:
-#   ports:
-#     - port: 80
-#       nodePort: 5050
-#   selector:
-#     app: wordpress
-#     tier: frontend
-#   type: NodePort
-
 # METALLB
 ---
 apiVersion: v1
@@ -56,9 +39,9 @@ spec:
     spec:
       containers:
       - name: wordpress
-#        image: wordpress:4.8-apache
-        image: wordpress:latest
-        imagePullPolicy: Never
+        image: wordpress:4.8-apache
+        # image: wordpress:latest
+        # imagePullPolicy: Never
         env:
         - name: WORDPRESS_DB_HOST
           value: mysql

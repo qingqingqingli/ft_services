@@ -2,7 +2,7 @@
 
 # Set color
 Color_Off='\033[0m'       # Text Reset
-lack='\033[0;30m'        # Black
+lack='\033[0;30m'         # Black
 Red='\033[0;31m'          # Red
 Green='\033[0;32m'        # Green
 Yellow='\033[0;33m'       # Yellow
@@ -94,7 +94,15 @@ docker image prune -a --force
 
 # ---------------------------DEPLOY PHPMYADMIN----------------------
 echo -e "$Purple DEPLOY PHPMYADMIN$Color_Off"
+
+docker build -t phpmyadmin phpmyadmin/
+
 kubectl apply -f phpmyadmin/phpmyadmin.yml
+
+kubectl delete -f phpmyadmin/phpmyadmin.yml
+
+docker container prune -f
+docker image prune -a --force
 
 # ---------------------------DEPLOY INFLUXDB------------------------
 echo -e "$Purple DEPLOY INFLUXDB$Color_Off"

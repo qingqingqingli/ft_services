@@ -1,20 +1,3 @@
-# NODEPORT
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata: 
-#   name: phpmyadmin
-#   labels:
-#     app: phpmyadmin
-# spec:
-#   type: NodePort
-#   selector:
-#     app: phpmyadmin
-#   ports:
-#     - protocol: TCP
-#       port: 80
-#       nodePort: 5000
-
 # METALLB
 ---
 apiVersion: v1
@@ -51,8 +34,10 @@ spec:
         app: phpmyadmin
     spec:
       containers:
-      - image: phpmyadmin/phpmyadmin
-        name: phpmyadmin
+      - name: phpmyadmin
+#        image: phpmyadmin/phpmyadmin
+        image: phpmyadmin:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 80
         env:
