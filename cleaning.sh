@@ -32,6 +32,7 @@ kubectl delete -f phpmyadmin/phpmyadmin.yml
 kubectl delete -f influxDB/influxdb.yml
 kubectl delete -f grafana/grafana.yml
 kubectl delete -f telegraf/telegraf.yml
+kubectl delete -f telegraf/telegraf_config.yml
 
 kubectl delete -f secret.yml
 
