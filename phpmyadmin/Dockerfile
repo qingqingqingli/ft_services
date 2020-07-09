@@ -21,7 +21,7 @@ RUN sed -i \
 RUN mkdir -p /www/tmp
 RUN chmod 777 /www/tmp
 
-# # copy relevant files
+# copy relevant files
 COPY srcs/config.inc.php /www
 COPY srcs/start.sh .
 RUN chmod +x start.sh
