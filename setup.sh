@@ -152,6 +152,11 @@ docker build -t telegraf telegraf/
 
 kubectl apply -f telegraf/telegraf.yml
 
+kubectl delete -f telegraf/telegraf.yml
+
+docker container prune -f
+docker image prune -a --force
+
 ####################################################################
 #                           DISPLAY OBJECTS & LINKS                #
 ####################################################################

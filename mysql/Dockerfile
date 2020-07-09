@@ -1,5 +1,7 @@
 FROM alpine
 
+LABEL maintainer="qli"
+
 # Setting environment variables
 ENV MYSQL_ROOT_PASSWORD=admin
 ENV MYSQL_DATABASE=wordpress
