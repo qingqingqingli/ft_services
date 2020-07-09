@@ -12,7 +12,7 @@ spec:
   ports:
     - name: http
       port: 5000
-      targetPort: 80
+      targetPort: 5000
       protocol: TCP
   type: LoadBalancer
 
@@ -39,7 +39,7 @@ spec:
         image: phpmyadmin:latest
         imagePullPolicy: Never
         ports:
-        - containerPort: 80
+        - containerPort: 5000
         env:
         - name: PMA_HOST
           value: mysql
