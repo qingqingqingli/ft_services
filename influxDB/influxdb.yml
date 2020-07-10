@@ -44,7 +44,6 @@ spec:
     spec:
       containers:
       - name: influxdb
-        # image: influxdb
         image: influxdb:latest
         imagePullPolicy: Never
         envFrom:
