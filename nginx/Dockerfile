@@ -1,5 +1,5 @@
 # OS base image
-FROM alpine:3.12
+FROM alpine
 
 # maintainer
 LABEL maintainer="qli"
@@ -8,7 +8,7 @@ LABEL maintainer="qli"
 RUN apk add --no-cache nginx openssl openssh
 
 # create user & give access
-RUN adduser -D -g 'www' www
+RUN addgroup www && adduser -S www -G www
 
 # create a directory for html files
 RUN mkdir /www && chmod +x /www
@@ -28,11 +28,6 @@ RUN openssl req -x509 \
 # copy config file
 COPY srcs/nginx.conf /etc/nginx/
 
-# create a /bin/bash directory
-RUN mkdir -p /bin/bash
-RUN chmod -R 777 /bin/bash
-RUN chown -R www:www /bin/bash
-
 # add ssh user & config
 RUN addgroup ssh && adduser -DH -G ssh test && \
 	echo "test:test" | chpasswd && \
@@ -44,6 +39,6 @@ EXPOSE 80 443 4500
 
 # start nginx
 RUN mkdir -p /run/nginx/
-COPY srcs/start.sh /bin/bash/start.sh
-RUN chmod +x /bin/bash/start.sh
-CMD ["bin/sh", "/bin/bash/start.sh"]
+COPY srcs/start.sh ./start.sh
+RUN chmod +x ./start.sh
+CMD sh ./start.sh
