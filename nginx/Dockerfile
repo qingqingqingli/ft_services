@@ -4,17 +4,14 @@ FROM alpine:3.12
 # maintainer
 LABEL maintainer="qli"
 
-# update the repo
-RUN apk update
-
-# install nginx openssl
-RUN apk add nginx openssl openssh && rm -f /var/cache/apk/*
+# install packages
+RUN apk add --no-cache nginx openssl openssh
 
 # create user & give access
 RUN adduser -D -g 'www' www
 
 # create a directory for html files
-RUN mkdir /www
+RUN mkdir /www && chmod +x /www
 RUN chown -R www:www /var/lib/nginx
 RUN chown -R www:www /www
 COPY srcs/index.html /www
@@ -29,7 +26,6 @@ RUN openssl req -x509 \
 	/O=Codam/CN=www.localhost.com"
 
 # copy config file
-RUN mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 COPY srcs/nginx.conf /etc/nginx/
 
 # create a /bin/bash directory
@@ -48,6 +44,6 @@ EXPOSE 80 443 4500
 
 # start nginx
 RUN mkdir -p /run/nginx/
-COPY srcs/start_nginx.sh /bin/bash/start_nginx.sh
-RUN chmod +x /bin/bash/start_nginx.sh
-CMD ["bin/sh", "/bin/bash/start_nginx.sh"]
+COPY srcs/start.sh /bin/bash/start.sh
+RUN chmod +x /bin/bash/start.sh
+CMD ["bin/sh", "/bin/bash/start.sh"]

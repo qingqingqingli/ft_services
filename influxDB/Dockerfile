@@ -3,7 +3,7 @@ FROM alpine
 LABEL maintainer="qli"
 
 # Installing packages & influxdb
-RUN apk update && apk add influxdb
+RUN apk add --no-cache influxdb
 
 VOLUME [ "/var/lib/influxdb" ]
 

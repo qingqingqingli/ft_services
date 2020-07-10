@@ -4,6 +4,8 @@ LABEL maintainer="qli"
 
 ENV GRAFANA_VERSION=7.0.5
 
+RUN apk add --no-cache wget
+
 RUN mkdir /tmp/grafana \
     && wget -P /tmp/ https://dl.grafana.com/oss/release/grafana-${GRAFANA_VERSION}.linux-amd64.tar.gz \
     && tar xfz /tmp/grafana-${GRAFANA_VERSION}.linux-amd64.tar.gz --strip-components=1 -C /tmp/grafana \
