@@ -50,7 +50,8 @@ spec:
     spec:
       containers:
       - name: ftps
-        image: fauria/vsftpd
+        image: ftps:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 21
           protocol: TCP
@@ -68,7 +69,7 @@ spec:
         - name: FTP_PASS
           value: "root"
         - name: PASV_ADDRESS
-          value: "192.168.99.201"
+          value: "192.168.99.204"
         - name: PASV_MIN_PORT
           value: "21000"
         - name: PASV_MAX_PORT

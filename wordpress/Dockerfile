@@ -1,5 +1,7 @@
 FROM alpine
 
+LABEL maintainer="qli"
+
 ENV VERSION_WORDPRESS 4.9.6
 ENV APACHE_SERVER_NAME example.com
 ENV APACHE_SERVER_PATH /var/www/localhost/htdocs
@@ -26,9 +28,9 @@ RUN unzip -q wordpress-${VERSION_WORDPRESS}.zip -d ./ && \
     apk del .build-deps
 
 # Copy of the HTTPD startup script
-COPY ./start.sh ./start.sh
+COPY srcs/wp-config.php ${APACHE_SERVER_PATH}/wp-config.php
+COPY srcs/start.sh ./start.sh
 RUN chmod +x ./start.sh
-COPY ./wp-config.php ${APACHE_SERVER_PATH}/wp-config.php
 
 EXPOSE 80
 
