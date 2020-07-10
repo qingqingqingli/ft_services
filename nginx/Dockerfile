@@ -8,7 +8,7 @@ LABEL maintainer="qli"
 RUN apk add --no-cache nginx openssl openssh
 
 # create user & give access
-RUN addgroup www && adduser -S www -G www
+RUN addgroup -S www && adduser -S www -G www
 
 # create a directory for html files
 RUN mkdir /www && chmod +x /www

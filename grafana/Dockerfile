@@ -4,35 +4,31 @@ LABEL maintainer="qli"
 
 ENV GRAFANA_VERSION=7.0.5
 
-RUN apk add --no-cache wget
+RUN apk add --no-cache wget libc6-compat ca-certificates su-exec bash
 
-RUN mkdir /tmp/grafana \
-    && wget -P /tmp/ https://dl.grafana.com/oss/release/grafana-${GRAFANA_VERSION}.linux-amd64.tar.gz \
-    && tar xfz /tmp/grafana-${GRAFANA_VERSION}.linux-amd64.tar.gz --strip-components=1 -C /tmp/grafana \
-    && rm /tmp/grafana-${GRAFANA_VERSION}.linux-amd64.tar.gz \
-    && mkdir -p /usr/share/grafana \
-    && mv /tmp/grafana/ /usr/share/
+RUN wget -c https://dl.grafana.com/oss/release/grafana-${GRAFANA_VERSION}.linux-amd64.tar.gz \
+    && tar -xzvf grafana-${GRAFANA_VERSION}.linux-amd64.tar.gz \
+    && rm grafana-${GRAFANA_VERSION}.linux-amd64.tar.gz \
+    && mv /grafana-${GRAFANA_VERSION} /usr/share/ \
+    && mv /usr/share/grafana-${GRAFANA_VERSION} /usr/share/grafana
 
-ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-    GF_PATHS_CONFIG="/etc/grafana/grafana.ini" \
-    GF_PATHS_DATA="/var/lib/grafana" \
-    GF_PATHS_HOME="/usr/share/grafana" \
-    GF_PATHS_LOGS="/var/log/grafana" \
-    GF_PATHS_PLUGINS="/var/lib/grafana/plugins" \
-    GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
+ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV GF_PATHS_CONFIG="/etc/grafana/grafana.ini"
+ENV GF_PATHS_DATA="/var/lib/grafana"
+ENV GF_PATHS_HOME="/usr/share/grafana"
+ENV GF_PATHS_LOGS="/var/log/grafana"
+ENV GF_PATHS_PLUGINS="/var/lib/grafana/plugins"
+ENV GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
 
-RUN set -ex \
-    && addgroup -S grafana \
-    && adduser -S -G grafana grafana \
-    && apk add --no-cache libc6-compat ca-certificates su-exec bash
+RUN addgroup -S grafana && adduser -S grafana -G grafana
 
 RUN mkdir -p "$GF_PATHS_HOME/.aws" \
-    && mkdir -p "$GF_PATHS_PROVISIONING/datasources" \
-        "$GF_PATHS_PROVISIONING/dashboards" \
-        "$GF_PATHS_PROVISIONING/notifiers" \
-        "$GF_PATHS_LOGS" \
-        "$GF_PATHS_PLUGINS" \
-        "$GF_PATHS_DATA" \
+    "$GF_PATHS_PROVISIONING/datasources" \
+    "$GF_PATHS_PROVISIONING/dashboards" \
+    "$GF_PATHS_PROVISIONING/notifiers" \
+    "$GF_PATHS_LOGS" \
+    "$GF_PATHS_PLUGINS" \
+    "$GF_PATHS_DATA" \
     && chown -R grafana:grafana "$GF_PATHS_DATA" "$GF_PATHS_HOME/.aws" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" "$GF_PATHS_PROVISIONING" \
     && chmod -R 777 "$GF_PATHS_DATA" "$GF_PATHS_HOME/.aws" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" "$GF_PATHS_PROVISIONING"
 
