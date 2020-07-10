@@ -1,4 +1,12 @@
+#specify the port number to connect on the remote host
 Port 4500
+
+#specify whether root can log in using ssh
 PermitRootLogin yes
+
+#specify whether password authentication is allowed
 PasswordAuthentication yes
+
+#configure an external subsystem
+#arguments should be a subsystem name and a command to execute upon subsystem request
 Subsystem	sftp	/usr/lib/openssh/sftp-server
