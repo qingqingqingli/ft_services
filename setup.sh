@@ -145,6 +145,11 @@ kubectl create configmap grafana-config \
 
 kubectl apply -f grafana/grafana.yml
 
+kubectl delete -f grafana/grafana.yml
+
+docker container prune -f
+docker image prune -a --force
+
 # ---------------------------DEPLOY TELEGRAF------------------------
 echo -e "$Purple DEPLOY TELEGRAF$Color_Off"
 

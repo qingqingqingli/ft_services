@@ -22,13 +22,7 @@ ENV GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
 
 RUN addgroup -S grafana && adduser -S grafana -G grafana
 
-RUN mkdir -p "$GF_PATHS_HOME/.aws" \
-    "$GF_PATHS_PROVISIONING/datasources" \
-    "$GF_PATHS_PROVISIONING/dashboards" \
-    "$GF_PATHS_PROVISIONING/notifiers" \
-    "$GF_PATHS_LOGS" \
-    "$GF_PATHS_PLUGINS" \
-    "$GF_PATHS_DATA" \
+RUN mkdir -p "$GF_PATHS_HOME/.aws" "$GF_PATHS_PROVISIONING/datasources" "$GF_PATHS_PROVISIONING/dashboards" "$GF_PATHS_PROVISIONING/notifiers" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" "$GF_PATHS_DATA" \
     && chown -R grafana:grafana "$GF_PATHS_DATA" "$GF_PATHS_HOME/.aws" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" "$GF_PATHS_PROVISIONING" \
     && chmod -R 777 "$GF_PATHS_DATA" "$GF_PATHS_HOME/.aws" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" "$GF_PATHS_PROVISIONING"
 
