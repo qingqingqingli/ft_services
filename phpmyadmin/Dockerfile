@@ -3,11 +3,10 @@ FROM alpine
 LABEL maintainer="qli"
 
 # download packages
-RUN apk update &&\
-    apk --update add php7 php7-mbstring php7-session php7-bcmath php7-cli php7-ctype php7-curl php7-fpm php7-gd php7-json php7-mcrypt php7-mysqli wget
+RUN apk --no-cache add php7 php7-mbstring php7-session php7-bcmath php7-cli php7-ctype php7-curl php7-fpm php7-gd php7-json php7-mcrypt php7-mysqli wget
 
 # download phpmyadmin
-RUN wget https://files.phpmyadmin.net/phpMyAdmin/4.9.5/phpMyAdmin-4.9.5-english.tar.gz
+RUN wget -c https://files.phpmyadmin.net/phpMyAdmin/4.9.5/phpMyAdmin-4.9.5-english.tar.gz
 RUN tar -zxvf phpMyAdmin-4.9.5-english.tar.gz
 RUN rm -f phpMyAdmin-4.9.5-english.tar.gz
 RUN mv phpMyAdmin-4.9.5-english /www

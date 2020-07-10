@@ -14,7 +14,7 @@
  * This is needed for cookie based authentication to encrypt password in
  * cookie. Needs to be 32 chars long.
  */
-$cfg['blowfish_secret'] = 'L0aX0e]WG3GOy1iU55t.Dfuwq6x-bMVX'; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
+$cfg['blowfish_secret'] = '$2a$07$4WHGUaNd7VhHAKSQJqrwKuHnWJRFuhufsMJgtupBYvnEd9uYsC.iy'; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
 
 /**
  * Servers configuration
@@ -157,3 +157,9 @@ $cfg['SaveDir'] = '';
  * You can find more configuration options in the documentation
  * in the doc/ folder or at <https://docs.phpmyadmin.net/>.
  */
+
+ # to silence the warning
+$cfg['PmaNoRelation_DisableWarning'] = TRUE;
+
+# to create a temp folder to allow for ca
+$cfg['TempDir'] = '/www/tmp';
