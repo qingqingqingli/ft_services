@@ -2,14 +2,16 @@ FROM alpine
 
 LABEL maintainer="qli"
 
+ENV PMA_VERSION=4.9.5
+
 # download packages
 RUN apk --no-cache add php7 php7-mbstring php7-session php7-bcmath php7-cli php7-ctype php7-curl php7-fpm php7-gd php7-json php7-mcrypt php7-mysqli wget
 
 # download phpmyadmin
-RUN wget -c https://files.phpmyadmin.net/phpMyAdmin/4.9.5/phpMyAdmin-4.9.5-english.tar.gz
-RUN tar -zxvf phpMyAdmin-4.9.5-english.tar.gz
-RUN rm -f phpMyAdmin-4.9.5-english.tar.gz
-RUN mv phpMyAdmin-4.9.5-english /www
+RUN wget -c https://files.phpmyadmin.net/phpMyAdmin/${PMA_VERSION}/phpMyAdmin-${PMA_VERSION}-english.tar.gz
+RUN tar -zxvf phpMyAdmin-${PMA_VERSION}-english.tar.gz
+RUN rm -f phpMyAdmin-${PMA_VERSION}-english.tar.gz
+RUN mv phpMyAdmin-${PMA_VERSION}-english /www
 RUN sed -i \
         -e "s/upload_max_filesize = .*/upload_max_filesize = 64M/" \
         -e "s/post_max_size = .*/post_max_size = 64M/"  \
