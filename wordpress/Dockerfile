@@ -2,7 +2,7 @@ FROM alpine
 
 LABEL maintainer="qli"
 
-ENV VERSION_WORDPRESS 4.9.6
+ENV VERSION_WORDPRESS 5.4.2
 ENV APACHE_SERVER_NAME example.com
 ENV APACHE_SERVER_PATH /var/www/localhost/htdocs
 ENV MYSQL_DATABASE wordpress
