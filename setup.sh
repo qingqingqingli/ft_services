@@ -25,15 +25,18 @@ White='\033[0;37m'        # White
 
 # ---------------------------START MINIKUBE-------------------------
 # echo -e "$Purple START A MINIKUBE INSTANCE$Color_Off"
-minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm \
---extra-config=apiserver.service-node-port-range=1-65535
+# minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm \
+# --extra-config=apiserver.service-node-port-range=1-65535
 
+minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm
+
+# change this based on whether it's macos or linux
 # ---------------------------REPLACE MINIKUBE_IP--------------------
 echo -e "$Purple REPLACE MINIKUBE_IP$Color_Off"
 # MacOS
-# sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+# sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
 # Linux
-sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
+sed -i "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
 
 # ---------------------------ADD MINIKUBE ADDONS--------------------
 echo -e "$Purple ADD MINIKUBE ADDONS$Color_Off"
@@ -53,7 +56,7 @@ echo -e "$Purple DEPLOY METALLB$Color_Off"
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-kubectl apply -f metalLB/metalLB_config.yml
+kubectl apply -f srcs/metalLB/metalLB_config.yml
 
 ####################################################################
 #                           DEPLOY SECRETS                         #
@@ -61,7 +64,7 @@ kubectl apply -f metalLB/metalLB_config.yml
 
 # ---------------------------DEPLOY SECRETS-------------------------
 echo -e "$Purple DEPLOY SECRETS$Color_Off"
-kubectl apply -f secret.yml
+kubectl apply -f srcs/secret.yml
 
 ####################################################################
 #                           DEPLOY SERVICES                        #
@@ -69,105 +72,67 @@ kubectl apply -f secret.yml
 
 # ---------------------------DEPLOY NGINX---------------------------
 echo -e "$Purple DEPLOY NGINX$Color_Off"
-docker build -t nginx nginx/
-kubectl apply -f nginx/nginx.yml
+docker build -t nginx srcs/nginx/
+kubectl apply -f srcs/nginx/nginx.yml
 
 # ---------------------------DEPLOY FTPS----------------------------
 echo -e "$Purple DEPLOY FTPS$Color_Off"
-docker build -t ftps ftps/
-
-kubectl apply -f ftps/ftps.yml
-
-kubectl delete -f ftps/ftps.yml
-
-docker container prune -f
-docker image prune -a --force
+docker build -t ftps srcs/ftps/
+kubectl apply -f srcs/ftps/ftps.yml
 
 # ---------------------------DEPLOY MYSQL---------------------------
 echo -e "$Purple DEPLOY MYSQL$Color_Off"
 
-docker build -t mysql mysql/
-
-kubectl apply -f mysql/mysql.yml
-
-kubectl delete -f mysql/mysql.yml
-
-docker container prune -f
-docker image prune -a --force
-
+docker build -t mysql srcs/mysql/
+kubectl apply -f srcs/mysql/mysql.yml
 
 # ---------------------------DEPLOY WORDPRESS-----------------------
 echo -e "$Purple DEPLOY WORDPRESS$Color_Off"
 
-docker build -t wordpress wordpress/
+docker build -t wordpress srcs/wordpress/
+kubectl apply -f srcs/wordpress/wordpress.yml
 
-kubectl apply -f wordpress/wordpress.yml
-
-kubectl delete -f wordpress/wordpress.yml
-
+kubectl delete -f srcs/wordpress/wordpress.yml
 docker container prune -f
 docker image prune -a --force
 
 # ---------------------------DEPLOY PHPMYADMIN----------------------
 echo -e "$Purple DEPLOY PHPMYADMIN$Color_Off"
 
-docker build -t phpmyadmin phpmyadmin/
-
-kubectl apply -f phpmyadmin/phpmyadmin.yml
-
-kubectl delete -f phpmyadmin/phpmyadmin.yml
-
-docker container prune -f
-docker image prune -a --force
+docker build -t phpmyadmin srcs/phpmyadmin/
+kubectl apply -f srcs/phpmyadmin/phpmyadmin.yml
 
 # ---------------------------DEPLOY INFLUXDB------------------------
 echo -e "$Purple DEPLOY INFLUXDB$Color_Off"
 
-docker build -t influxdb influxDB/
-
-kubectl apply -f influxDB/influxdb.yml
-
-kubectl delete -f influxDB/influxdb.yml
-
-docker container prune -f
-docker image prune -a --force
+docker build -t influxdb srcs/influxDB/
+kubectl apply -f srcs/influxDB/influxdb.yml
 
 # ---------------------------DEPLOY GRAFANA-------------------------
 echo -e "$Purple DEPLOY GRAFANA$Color_Off"
 
-docker build -t grafana grafana/
+docker build -t grafana srcs/grafana/
 
 sleep 10
 
 kubectl create configmap grafana-config \
---from-file=grafana_datasource.yml=grafana/grafana_datasource.yml \
---from-file=grafana_dashboard_provider.yml=grafana/grafana_dashboard_provider.yml \
---from-file=influxdb_dashboard.json=grafana/dashboard/influxdb_dashboard.json \
---from-file=mysql_dashboard.json=grafana/dashboard/mysql_dashboard.json \
---from-file=grafana_dashboard.json=grafana/dashboard/grafana_dashboard.json \
---from-file=nginx_dashboard.json=grafana/dashboard/nginx_dashboard.json \
---from-file=phpmyadmin_dashboard.json=grafana/dashboard/phpmyadmin_dashboard.json \
---from-file=wordpress_dashboard.json=grafana/dashboard/wordpress_dashboard.json \
---from-file=ftps_dashboard.json=grafana/dashboard/ftps_dashboard.json
+--from-file=grafana_datasource.yml=srcs/grafana/grafana_datasource.yml \
+--from-file=grafana_dashboard_provider.yml=srcs/grafana/grafana_dashboard_provider.yml \
+--from-file=influxdb_dashboard.json=srcs/grafana/dashboard/influxdb_dashboard.json \
+--from-file=mysql_dashboard.json=srcs/grafana/dashboard/mysql_dashboard.json \
+--from-file=grafana_dashboard.json=srcs/grafana/dashboard/grafana_dashboard.json \
+--from-file=nginx_dashboard.json=srcs/grafana/dashboard/nginx_dashboard.json \
+--from-file=phpmyadmin_dashboard.json=srcs/grafana/dashboard/phpmyadmin_dashboard.json \
+--from-file=wordpress_dashboard.json=srcs/grafana/dashboard/wordpress_dashboard.json \
+--from-file=ftps_dashboard.json=srcs/grafana/dashboard/ftps_dashboard.json
 
-kubectl apply -f grafana/grafana.yml
-
-kubectl delete -f grafana/grafana.yml
-
-docker container prune -f
-docker image prune -a --force
+kubectl apply -f srcs/grafana/grafana.yml
 
 # ---------------------------DEPLOY TELEGRAF------------------------
 echo -e "$Purple DEPLOY TELEGRAF$Color_Off"
 
-docker build -t telegraf telegraf/
-
-kubectl apply -f telegraf/telegraf.yml
-
-kubectl delete -f telegraf/telegraf.yml
-
-docker container prune -f
-docker image prune -a --force
+docker build -t telegraf srcs/telegraf/
+kubectl apply -f srcs/telegraf/telegraf.yml
 
 ####################################################################
 #                           DISPLAY OBJECTS & LINKS                #

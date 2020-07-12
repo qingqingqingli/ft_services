@@ -3,12 +3,7 @@ FROM alpine
 LABEL maintainer="qli"
 
 ENV VERSION_WORDPRESS 5.4.2
-ENV APACHE_SERVER_NAME example.com
 ENV APACHE_SERVER_PATH /var/www/localhost/htdocs
-ENV MYSQL_DATABASE wordpress
-ENV MYSQL_USER admin
-ENV MYSQL_PASSWORD admin
-ENV MYSQL_HOST mysql
 
 # Installing dependencies
 RUN apk add --no-cache --virtual .build-deps unzip wget mysql mysql-client
