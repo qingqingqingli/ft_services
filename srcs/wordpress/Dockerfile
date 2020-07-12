@@ -2,31 +2,19 @@ FROM alpine
 
 LABEL maintainer="qli"
 
-ENV VERSION_WORDPRESS 5.4.2
-ENV APACHE_SERVER_PATH /var/www/localhost/htdocs
+RUN apk add --no-cache wget php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib php7-curl php7-mbstring php7-json php7-session
 
-# Installing dependencies
-RUN apk add --no-cache --virtual .build-deps unzip wget mysql mysql-client
-RUN apk add --no-cache apache2 php7 php7-apache2 php7-openssl php7-xml php7-pdo php7-mcrypt php7-session php7-mysqli php7-zlib su-exec
-RUN mkdir -p /run/apache2 /run/httpd
+# download wordpress
+RUN mkdir -p /usr/share/webapps/
+RUN wget -c https://wordpress.org/latest.tar.gz
+RUN tar -xzvf latest.tar.gz -C /usr/share/webapps/
+RUN rm latest.tar.gz
 
-# Download & install wordpress
-RUN wget -c https://wordpress.org/wordpress-${VERSION_WORDPRESS}.zip
-RUN unzip -q wordpress-${VERSION_WORDPRESS}.zip -d ./ && \
-    rm -rf ${APACHE_SERVER_PATH} && \
-    mv wordpress/ ${APACHE_SERVER_PATH} && \
-    rm /wordpress-${VERSION_WORDPRESS}.zip \
-        ${APACHE_SERVER_PATH}/wp-config-sample.php \
-        ${APACHE_SERVER_PATH}/license.txt \
-        ${APACHE_SERVER_PATH}/readme.html && \
-    chown -R apache:apache ${APACHE_SERVER_PATH} && \
-    apk del .build-deps
-
-# Copy of the HTTPD startup script
-COPY srcs/wp-config.php ${APACHE_SERVER_PATH}/wp-config.php
-COPY srcs/start.sh ./start.sh
+# copy relevant file
+COPY srcs/wp-config.php /usr/share/webapps/wordpress/wp-config.php
+COPY srcs/start.sh .
 RUN chmod +x ./start.sh
 
-EXPOSE 80
+EXPOSE 5050
 
-CMD [ "./start.sh" ]
+CMD sh ./start.sh
