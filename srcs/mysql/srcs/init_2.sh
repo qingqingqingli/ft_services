@@ -11,8 +11,6 @@ printf '\n'
 
 # sending commands into commands.sql
 cat << EOF > commands.sql
-USE wordpress;
-UPDATE wp_options SET option_value = "http://192.168.99.202:5050" WHERE option_id BETWEEN 1 AND 2;
 USE mysql;
 CREATE USER 'admin'@'%';
 GRANT ALL PRIVILEGES ON wordpress.* TO 'admin'@'%' WITH GRANT OPTION;
