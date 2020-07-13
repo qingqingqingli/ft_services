@@ -15,33 +15,48 @@ White='\033[0;37m'        # White
 #                           MINIKUBE SETUP                         #
 ####################################################################
 
-# ---------------------------DELETE EXISTING ENVIRONMENT------------
-# echo -e "$Purple DELETE EXISTING ENVIRONMENT$Color_Off"
+# ---------------------------PREREQUISITES------------
+echo -e "$Purple DELETE EXISTING MINIKUBE $Color_Off"
 # minikube delete
-# rm -rf /Volumes/Storage/goinfre/qli/minikube/.minikube
+# rm -rf /Volumes/Storage/goinfre/INTRA_NAME/minikube/.minikube
+
+echo -e "$Purple INSTALL MINIKUBE & KUBECTL $Color_Off"
+# install homebrew
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+# install kubectl
+# brew install kubectl
+
+# install minikube
+# brew install minikube
 # mkdir -p ~/goinfre/minikube
 # chmod +x ~/goinfre/minikube
-# export MINIKUBE_HOME=/Volumes/Storage/goinfre/qli/minikube/
+# export MINIKUBE_HOME=/Volumes/Storage/goinfre/INTRA_NAME/minikube/
+
+echo -e "$Purple INSTALL DOCKER & VIRTUALBOX $Color_Off"
+# Go to Managed Software Center
+
+echo -e "$Purple INSTALL FILEZILLA CLIENT $Color_Off"
+# https://filezilla-project.org/download.php?platform=osx
 
 # ---------------------------START MINIKUBE-------------------------
-# echo -e "$Purple START A MINIKUBE INSTANCE$Color_Off"
-# minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm \
-# --extra-config=apiserver.service-node-port-range=1-65535
-
+echo -e "$Purple START A MINIKUBE INSTANCE$Color_Off"
+minikube delete
 minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm
 
 # change this based on whether it's macos or linux
 # ---------------------------REPLACE MINIKUBE_IP--------------------
 echo -e "$Purple REPLACE MINIKUBE_IP$Color_Off"
 # MacOS
-# sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
+sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
 # Linux
-sed -i "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
+# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
 
 # ---------------------------ADD MINIKUBE ADDONS--------------------
 echo -e "$Purple ADD MINIKUBE ADDONS$Color_Off"
 minikube addons enable dashboard
 minikube addons enable metrics-server
+sleep 5
 
 # ---------------------------CONNECT MINIKUBE TO DOCKER-------------
 echo -e "$Purple CONNECT MINIKUBE TO DOCKER$Color_Off"
@@ -75,6 +90,9 @@ echo -e "$Purple DEPLOY NGINX$Color_Off"
 docker build -t nginx srcs/nginx/
 kubectl apply -f srcs/nginx/nginx.yml
 
+# to access nginx via ssh
+# ssh test@192.168.99.200 -p 4500
+
 # ---------------------------DEPLOY FTPS----------------------------
 echo -e "$Purple DEPLOY FTPS$Color_Off"
 docker build -t ftps srcs/ftps/
@@ -91,10 +109,6 @@ echo -e "$Purple DEPLOY WORDPRESS$Color_Off"
 
 docker build -t wordpress srcs/wordpress/
 kubectl apply -f srcs/wordpress/wordpress.yml
-
-kubectl delete -f srcs/wordpress/wordpress.yml
-docker container prune -f
-docker image prune -a --force
 
 # ---------------------------DEPLOY PHPMYADMIN----------------------
 echo -e "$Purple DEPLOY PHPMYADMIN$Color_Off"
@@ -113,7 +127,7 @@ echo -e "$Purple DEPLOY GRAFANA$Color_Off"
 
 docker build -t grafana srcs/grafana/
 
-sleep 10
+sleep 5
 
 kubectl create configmap grafana-config \
 --from-file=grafana_datasource.yml=srcs/grafana/grafana_datasource.yml \
@@ -144,176 +158,52 @@ kubectl get all
 
 # ---------------------------MINIKUBE DASHBOARD---------------------
 echo -e "$Purple MINIKUBE DASHBOARD$Color_Off"
-# minikube dashboard
+minikube dashboard
 
-# ==================================================================
-
-####################################################################
-#                           MINIKUBE SETUP                         #
-####################################################################
-
-# [macOS]
-# minikube delete
-# rm -rf /Volumes/Storage/goinfre/qli/minikube/.minikube
-# mkdir -p ~/goinfre/minikube
-# chmod +x ~/goinfre/minikube
-# export MINIKUBE_HOME=/Volumes/Storage/goinfre/qli/minikube/
-
-# [LINUX - at root]
-# minikube delete
-
-# [MINIKUBE START - need to change nodeport]
-# minikube start --driver=virtualbox --extra-config=apiserver.service-node-port-range=1-65535 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true
-# minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm --extra-config=apiserver.service-node-port-range=1-65535
-
-# echo -e "$Purple Change MINIKUBE_IP$Color_Off"
-
-# MacOS
-# [REPLACE MINIKUBE_IP TO ACTUAL IP]
-# sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
-# [REPLACE ACTUAL IP TO MINIKUBE_IP]
-# sed -i "" "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
-
-# Linux
-# [REPLACE MINIKUBE_IP TO ACTUAL IP]
-# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" secret.yml
-# [REPLACE ACTUAL IP TO MINIKUBE_IP]
-# sed -i "s|$(minikube ip)|MINIKUBE_IP|g" secret.yml
-
-# [ADD ALL MINIKUBE ADDONS]
-# echo -e "$Purple Add ingress & dashboard$Color_Off"
-# minikube addons enable ingress
-# minikube addons enable dashboard
-# minikube addons enable metrics-server
-# sleep 15
+# ####################################################################
+# #                           REMOVING K8S OBJECTS                   #
+# ####################################################################
 
 # # [CONNECT DOCKER TO MINIKUBE]
 # eval $(minikube -p minikube docker-env)
 
-####################################################################
-#                           DEPLOY METALLB                         #
-####################################################################
+# echo -e "$Green Delete k8s deployment & service$Color_Off"
+# kubectl delete -f srcs/nginx/nginx.yml
+# kubectl delete -f srcs/ftps/ftps.yml
+# kubectl delete -f srcs/mysql/mysql.yml
+# kubectl delete -f srcs/wordpress/wordpress.yml
+# kubectl delete -f srcs/phpmyadmin/phpmyadmin.yml
+# kubectl delete -f srcs/influxDB/influxdb.yml
+# kubectl delete -f srcs/grafana/grafana.yml
+# kubectl delete -f srcs/telegraf/telegraf.yml
 
-# echo -e "$Purple Add metalLB$Color_Off"
-# # [DEPLOY THE MANIFEST]
-# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
-# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-# # [ONLY ON FIRST INSTALL]
-# kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-# kubectl apply -f metalLB/metalLB_config.yml
+# kubectl delete -f srcs/secret.yml
 
-####################################################################
-#                           BUILD CUSTOM IMAGES                    #
-####################################################################
+# kubectl delete configmap/grafana-config
 
-# echo -e "\n$Purple Build Docker Image$Color_Off"
-# docker build -t nginx nginx/
+# ####################################################################
+# #                           REMOVE METALLB                         #
+# ####################################################################
 
-####################################################################
-#                           BUILD K8S OBJECTS                      #
-####################################################################
+# # [DEPLOY MANIFEST]
+# kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+# kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+# kubectl delete secret -n metallb-system memberlist
+# kubectl delete -f srcs/metalLB/metalLB_config.yml
 
-# echo -e "\n$Purple Build K8S Objects$Color_Off"
+# ####################################################################
+# #                           REMOVING DOCKER PROPERTIES             #
+# ####################################################################
 
-# echo -e "\n$Purple Create ingress secrets$Color_Off"
-# kubectl create secret tls ingress-secret --key ingress/localhost.key --cert ingress/localhost.cert
+# # [CONNECT DOCKER TO MINIKUBE]
+# eval $(minikube -p minikube docker-env)
 
-# kubectl apply -f secret.yml 
+# echo -e "\n$Green Remove docker images & containers$Color_Off"
+# docker container prune -f
+# docker image prune -a --force
 
-# create grafana configmap 
-# kubectl create configmap grafana-config \
-# --from-file=grafana_datasource.yml=grafana/grafana_datasource.yml \
-# --from-file=grafana_dashboard_provider.yml=grafana/grafana_dashboard_provider.yml \
-# --from-file=influxdb_dashboard.json=grafana/influxdb_dashboard.json \
-# --from-file=mysql_dashboard.json=grafana/mysql_dashboard.json \
-# --from-file=grafana_dashboard.json=grafana/grafana_dashboard.json \
-# --from-file=nginx_dashboard.json=grafana/nginx_dashboard.json \
-# --from-file=phpmyadmin_dashboard.json=grafana/phpmyadmin_dashboard.json \
-# --from-file=wordpress_dashboard.json=grafana/wordpress_dashboard.json
+# remove minikube
+# minikube delete
+# rm -rf /Volumes/Storage/goinfre/INTRA_NAME/minikube/.minikube
 
-# echo -e "\n$Purple Create k8s objects$Color_Off"
-# kubectl apply -k ./
-
-####################################################################
-#                           DISPLAY OBJECTS & LINKS                #
-####################################################################
-# echo -e "\n$Purple\nDisplay all k8s objects$Color_Off"
-# kubectl get all
-
-# echo -e "\n$Purple\nDisplay dashboard$Color_Off"
-# minikube dashboard
-
-####################################################################
-#                           BACKUP COMMANDS                        #
-####################################################################
-
-# FileZilla download link
-# https://dl1.cdn.filezilla-project.org/client/FileZilla_3.48.1_macosx-x86.app.tar.bz2?h=kZVZGu7vGVngVkZyQWdQ_A&x=1593598398
-
-# Before running Docker, run the commands below
-
-# mkdir -p ~/goinfre/docker
-# rm -rf ~/Library/Containers/com.docker.docker
-# ln -s ~/goinfre/docker ~/Library/Containers/com.docker.docker
-
-# clearhome
-# alias clearhome="echo -n \"Available before:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4; unsetopt nomatch; rm -Rf ~/Library/*.42_cache_bak*; rm -Rf ~/*.42_cache_bak_*; setopt nomatch; echo -n \"Available after:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4;"
-# clearhome
-
-# [ACCESS TO SERVICES]
-# echo -e "\n$Purple\nAccess to services: \n$Color_Off"
-# echo -e "Link to Nginx: https://$(minikube ip)"
-# echo -e "Link to Wordpress: http://$(minikube ip):5050"
-# echo -e "Link to phpMyAdmin: http://$(minikube ip):5000"
-# echo -e "Link to Grafana: http://$(minikube ip):3000"
-
-# check for container logs
-# kubectl logs -f container_name
-
-# Run the image in docker 
-# docker run --rm -it -p 80:80 -p 443:443 nginx:latest
-
-# get all kubernetes content
-# kubectl get all
-
-# apply kustimization file is a quick way to deploy all ymal files
-# (create & reconfigure) kubectl apply -k ./ 
-# (delete) kubectl delete -k ./
-
-# get all kubernetes resources on all namespaces
-# kubectl get all --all-namespaces
-
-# check the file system inside a pod container
-# kubectl exec -it pod_name  -- /bin/sh
-# or 
-# kubectl exec -it pod_name  -- /bin/bash
-
-# to restart docker
-# sudo systemctl restart docker
-
-# to start minikube with a smaller amount of memory (docker as default)
-# minikube start --memory=1g
-
-# check minikube status
-# minikube status
-
-# to get minikube ip
-# minikube ip
-
-# minikube dashboard missing package
-# sudo apt install appmenu-gtk2-module appmenu-gtk3-module
-
-# to check the current file usage
-# df -h
-
-# another way to create ingress secret
-# kubectl create secret generic ca-secret --from-file=tls.crt=ingress/server.crt \
-# --from-file=tls.key=ingress/server.key --from-file=ca.crt=ingress/ca.crt
-
-# replace all the IP addresses - Does not work yet
-# sed -i '' 's/MINIKUBE_IP/$(minikube ip)/g' nginx/srcs/index.html
-
-# echo -e "\n$Purple Create grafana configmap$Color_Off"
-# kubectl create configmap grafana-config \
-#   --from-file=influxdb-datasource.yml=grafana/influxdb-datasource.yml \
-#   --from-file=grafana-dashboard-provider.yml=grafana/grafana-dashboard-provider.yml
+# echo -e "\n$Green Cleaning finishes!$Color_Off"
