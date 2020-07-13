@@ -50,7 +50,7 @@ echo -e "$Purple REPLACE MINIKUBE_IP$Color_Off"
 # MacOS
 sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
 # Linux
-# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
+sed -i "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
 
 # ---------------------------ADD MINIKUBE ADDONS--------------------
 echo -e "$Purple ADD MINIKUBE ADDONS$Color_Off"
