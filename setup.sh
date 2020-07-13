@@ -145,7 +145,8 @@ kubectl create configmap grafana-config \
 --from-file=nginx_dashboard.json=srcs/grafana/dashboard/nginx_dashboard.json \
 --from-file=phpmyadmin_dashboard.json=srcs/grafana/dashboard/phpmyadmin_dashboard.json \
 --from-file=wordpress_dashboard.json=srcs/grafana/dashboard/wordpress_dashboard.json \
---from-file=ftps_dashboard.json=srcs/grafana/dashboard/ftps_dashboard.json
+--from-file=ftps_dashboard.json=srcs/grafana/dashboard/ftps_dashboard.json \
+--from-file=telegraf_dashboard.json=srcs/grafana/dashboard/telegraf_dashboard.json
 
 kubectl apply -f srcs/grafana/grafana.yml
 

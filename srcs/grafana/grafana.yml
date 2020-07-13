@@ -75,6 +75,10 @@ spec:
           name: grafana-config-volume
           readOnly: true
           subPath: ftps_dashboard.json
+        - mountPath: /var/lib/grafana/dashboards/telegraf_dashboard.json
+          name: grafana-config-volume
+          readOnly: true
+          subPath: telegraf_dashboard.json
         env:
         - name: GF_SECURITY_ADMIN_USER
           valueFrom:
