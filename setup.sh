@@ -20,11 +20,14 @@ echo -e "$Purple DELETE EXISTING MINIKUBE $Color_Off"
 # minikube delete
 # rm -rf /Volumes/Storage/goinfre/INTRA_NAME/minikube/.minikube
 
+
 echo -e "$Purple INSTALL MINIKUBE & KUBECTL $Color_Off"
 # install homebrew
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+# alias clearhome="echo -n \"Available before:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4; unsetopt nomatch; rm -Rf ~/Library/*.42_cache_bak*; rm -Rf ~/*.42_cache_bak_*; setopt nomatch; echo -n \"Available after:\t\"; df -h | grep $HOME | sed 's/  */:/g' | cut -d ':' -f 4;"
 
 # install kubectl
+# kubectl version
 # brew install kubectl
 
 # install minikube
@@ -35,6 +38,10 @@ echo -e "$Purple INSTALL MINIKUBE & KUBECTL $Color_Off"
 
 echo -e "$Purple INSTALL DOCKER & VIRTUALBOX $Color_Off"
 # Go to Managed Software Center
+
+# mkdir -p ~/goinfre/docker
+# rm -rf ~/Library/Containers/com.docker.docker
+# ln -s ~/goinfre/docker ~/Library/Containers/com.docker.docker
 
 echo -e "$Purple INSTALL FILEZILLA CLIENT $Color_Off"
 # https://filezilla-project.org/download.php?platform=osx
