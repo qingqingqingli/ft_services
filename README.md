@@ -26,8 +26,13 @@ $ echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
 
 # install kubectl
 $ brew install kubectl
+
+# install minikube
+$ brew install minikube
 ```
 
 ![ft_services_0](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_0.png)
 
 ![ft_services_1](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_1.png)
+
+![ft_services_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_2.png)
