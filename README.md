@@ -11,6 +11,7 @@
 - Dockerfile needs to be built. Forbidden to use docker images from DockerHub
 
 ## How to test
+- Disclaimer: The ```setup.sh``` includes steps to follow on MacOS. This demonstration is done on a Linux distribution (```Pop!_OS 20.04 LTS```).
 
 > Step 1: Install Minikube
 
@@ -36,3 +37,6 @@ $ brew install minikube
 ![ft_services_1](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_1.png)
 
 ![ft_services_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_2.png)
+
+> Step 2: Install Docker, VirtualBox & FileZilla Client
+- The steps needed depend on the OS and therefore skipped here. 
