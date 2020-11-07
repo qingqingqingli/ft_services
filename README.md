@@ -40,3 +40,9 @@ $ brew install minikube
 
 > Step 2: Install Docker, VirtualBox & FileZilla Client
 - The steps needed depend on the OS and therefore skipped here. 
+
+![ft_services_3](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_3.png)
+
+![ft_services_4](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_4.png)
+
+![ft_services_5](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_5.png)
