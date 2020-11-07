@@ -71,3 +71,59 @@ $ sleep 5
 $ eval $(minikube -p minikube docker-env)
 
 ```
+> Step 4: Deploy MetalLB, secrets & services
+
+```shell
+# Deploy MetalLB
+$ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+$ kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+$ kubectl apply -f srcs/metalLB/metalLB_config.yml
+
+# Deploy secrets
+$ kubectl apply -f srcs/secret.yml
+
+# Deploy Nginx
+$ docker build -t nginx srcs/nginx/
+$ kubectl apply -f srcs/nginx/nginx.yml
+
+# Deploy FTPS
+$ docker build -t ftps srcs/ftps/
+$ kubectl apply -f srcs/ftps/ftps.yml
+
+# Deploy MySQL
+$ docker build -t mysql srcs/mysql/
+$ kubectl apply -f srcs/mysql/mysql.yml
+
+# Deploy Wordpress
+$ docker build -t wordpress srcs/wordpress/
+$ kubectl apply -f srcs/wordpress/wordpress.yml
+
+# Deploy PhpMyAdmin
+$ docker build -t phpmyadmin srcs/phpmyadmin/
+$ kubectl apply -f srcs/phpmyadmin/phpmyadmin.yml
+
+# Deploy influxDB
+$ docker build -t influxdb srcs/influxDB/
+$ kubectl apply -f srcs/influxDB/influxdb.yml
+
+# Deploy Grafana
+$ kubectl create configmap grafana-config \
+--from-file=grafana_datasource.yml=srcs/grafana/grafana_datasource.yml \
+--from-file=grafana_dashboard_provider.yml=srcs/grafana/grafana_dashboard_provider.yml \
+--from-file=influxdb_dashboard.json=srcs/grafana/dashboard/influxdb_dashboard.json \
+--from-file=mysql_dashboard.json=srcs/grafana/dashboard/mysql_dashboard.json \
+--from-file=grafana_dashboard.json=srcs/grafana/dashboard/grafana_dashboard.json \
+--from-file=nginx_dashboard.json=srcs/grafana/dashboard/nginx_dashboard.json \
+--from-file=phpmyadmin_dashboard.json=srcs/grafana/dashboard/phpmyadmin_dashboard.json \
+--from-file=wordpress_dashboard.json=srcs/grafana/dashboard/wordpress_dashboard.json \
+--from-file=ftps_dashboard.json=srcs/grafana/dashboard/ftps_dashboard.json \
+--from-file=telegraf_dashboard.json=srcs/grafana/dashboard/telegraf_dashboard.json
+
+$ kubectl apply -f srcs/grafana/grafana.yml
+
+# Deploy telegraf
+$ docker build -t telegraf srcs/telegraf/
+$ kubectl apply -f srcs/telegraf/telegraf.yml
+
+```
