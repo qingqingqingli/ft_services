@@ -11,7 +11,7 @@
 - Dockerfile needs to be built. Forbidden to use docker images from DockerHub
 
 ## How to test
-- Disclaimer: The ```setup.sh``` includes steps to follow on MacOS. This demonstration is done on a Linux distribution (```Pop!_OS 20.04 LTS```).
+- Disclaimer: The ```setup.sh``` file in the repo includes steps to follow on MacOS. This demonstration is done on a Linux distribution (```Pop!_OS 20.04 LTS```).
 
 > Step 1: Install Minikube
 
