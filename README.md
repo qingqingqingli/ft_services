@@ -46,3 +46,22 @@ $ brew install minikube
 ![ft_services_4](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_4.png)
 
 ![ft_services_5](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_5.png)
+
+> Step 3: Start a Minikube instace
+
+```shell
+# remove existing minikube instance
+$ minikube delete
+# Start a new minikube instance
+$ minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm
+# MacOS: Replace minikube ip in secret file
+$ sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
+# Linux: Replace minikube ip in secret file
+$ sed -i "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
+# Add minikube instance
+$ minikube addons enable dashboard
+$ minikube addons enable metrics-server
+$ sleep 5
+# Connect minikube to docker
+$ eval $(minikube -p minikube docker-env)
+```
