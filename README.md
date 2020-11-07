@@ -15,6 +15,7 @@
 > Step 1: Install Minikube
 
 ```shell
+# install homebrew 
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
