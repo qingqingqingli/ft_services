@@ -32,20 +32,8 @@ $ brew install kubectl
 $ brew install minikube
 ```
 
-![ft_services_0](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_0.png)
-
-![ft_services_1](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_1.png)
-
-![ft_services_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_2.png)
-
 > Step 2: Install Docker, VirtualBox & FileZilla Client
 - The steps needed depend on the OS and therefore skipped here. 
-
-![ft_services_3](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_3.png)
-
-![ft_services_4](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_4.png)
-
-![ft_services_5](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_5.png)
 
 > Step 3: Start a Minikube instace
 
