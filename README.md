@@ -6,9 +6,10 @@
 ## Technical considerations
 
 - Must use Kubernetes
-- Set up a multi-service cluster. Each service run in a dedicated container
-- Containers to be built using Alpine Linux
-- Dockerfile needs to be built. Forbidden to use docker images from DockerHub
+- Set up a multi-service cluster that includes ```Nginx```, ```Wordpress```, ```PhpMyAdmin```, ```MySQL```, ```Grafana```, ```InfluxDB``` and ```FTPS```. 
+- Each service runs in a dedicated container
+- Containers are built using Alpine Linux
+- Dockerfile of each service needs to be custom built. Forbidden to use docker images from DockerHub
 
 ## How to test
 - Disclaimer: The ```setup.sh``` file in the repo includes steps to follow on MacOS. This demonstration is done on a Linux distribution (```Pop!_OS 20.04 LTS```).
