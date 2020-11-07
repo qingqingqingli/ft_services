@@ -17,6 +17,17 @@
 ```shell
 # install homebrew 
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+# LINUX: Add Homebrew to your PATH and bash shell profile script
+$ test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+$ test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+$ test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
+$ echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
+
+# install kubectl
+$ brew install kubectl
 ```
 
 ![ft_services_0](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_0.png)
+
+![ft_services_1](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_1.png)
