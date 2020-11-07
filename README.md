@@ -115,3 +115,14 @@ $ docker build -t telegraf srcs/telegraf/
 $ kubectl apply -f srcs/telegraf/telegraf.yml
 
 ```
+
+## Examples
+
+- Output of ```kubectle get all```
+![ft_services_10](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_10.png)
+
+- Output of ```minikube dashboard```
+![ft_services_11](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_11.png)
+
+- IP addresses of different services
+![ft_services_12](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_12.png)

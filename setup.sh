@@ -48,16 +48,16 @@ echo -e "$Purple INSTALL FILEZILLA CLIENT $Color_Off"
 
 # ---------------------------START MINIKUBE-------------------------
 echo -e "$Purple START A MINIKUBE INSTANCE$Color_Off"
-minikube delete
-minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm
+# minikube delete
+# minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm
 
 # change this based on whether it's macos or linux
 # ---------------------------REPLACE MINIKUBE_IP--------------------
-echo -e "$Purple REPLACE MINIKUBE_IP$Color_Off"
-# MacOS
-sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
-# Linux
-sed -i "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
+# echo -e "$Purple REPLACE MINIKUBE_IP$Color_Off"
+# # MacOS
+# sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
+# # Linux
+# sed -i "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
 
 # ---------------------------ADD MINIKUBE ADDONS--------------------
 echo -e "$Purple ADD MINIKUBE ADDONS$Color_Off"
