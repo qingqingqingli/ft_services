@@ -33,7 +33,7 @@ $ brew install minikube
 ```
 
 > Step 2: Install Docker, VirtualBox & FileZilla Client
-- The steps needed depend on the OS, and are therefore skipped here. 
+- The required steps are dependant on the OS, and are therefore skipped here. 
 
 > Step 3: Start a Minikube instace
 
