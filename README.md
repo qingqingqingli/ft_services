@@ -52,16 +52,22 @@ $ brew install minikube
 ```shell
 # remove existing minikube instance
 $ minikube delete
+
 # Start a new minikube instance
 $ minikube start --driver=virtualbox --memory=3000MB --bootstrapper=kubeadm
+
 # MacOS: Replace minikube ip in secret file
 $ sed -i "" "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
+
 # Linux: Replace minikube ip in secret file
 $ sed -i "s|MINIKUBE_IP|$(minikube ip)|g" srcs/secret.yml
+
 # Add minikube instance
 $ minikube addons enable dashboard
 $ minikube addons enable metrics-server
 $ sleep 5
+
 # Connect minikube to docker
 $ eval $(minikube -p minikube docker-env)
+
 ```
