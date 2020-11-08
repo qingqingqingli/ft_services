@@ -20,10 +20,11 @@ RUN sed -i \
 
 # create tmp folders
 RUN mkdir -p /www/tmp
-RUN chmod 777 /www/tmp
+RUN chmod 755 /www/tmp
 
 # copy relevant files
 COPY srcs/config.inc.php /www
+RUN chmod 755 www/config.inc.php
 COPY srcs/start.sh .
 RUN chmod +x start.sh
 
