@@ -130,3 +130,11 @@ $ kubectl apply -f srcs/telegraf/telegraf.yml
 - IP addresses of different services
 
 ![ft_services_9](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_9.png)
+
+- Nginx
+
+![ft_services_nginx](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_nginx.png)
+
+- Wordpress
+
+![ft_services_wordpress](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_wordpress.png)
