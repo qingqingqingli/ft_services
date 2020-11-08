@@ -121,36 +121,36 @@ $ kubectl apply -f srcs/telegraf/telegraf.yml
 
 - **Output of ```kubectle get all```**
 
-![ft_services_10](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_10.png)
+[![ft_services_10](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_10.png)](https://github.com/qingqingqingli/ft_services)
 
 - **Output of ```minikube dashboard```**
 
-![ft_services_8](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_8.png)
+[![ft_services_8](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_8.png)](https://github.com/qingqingqingli/ft_services)
 
 - **IP addresses of different services**
 
-![ft_services_9](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_9.png)
+[![ft_services_9](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_9.png)](https://github.com/qingqingqingli/ft_services)
 
 - **Nginx**
 
-![ft_services_nginx](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_nginx.png)
+[![ft_services_nginx](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_nginx.png)](https://github.com/qingqingqingli/ft_services)
 
 - **Wordpress**
 
-![ft_services_wordpress](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_wordpress.png)
+[![ft_services_wordpress](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_wordpress.png)](https://github.com/qingqingqingli/ft_services)
 
 - **PhpMyAdmin with wordpress database**
 
-![ft_services_pma_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_pma_2.png)
+[![ft_services_pma_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_pma_2.png)](https://github.com/qingqingqingli/ft_services)
 
 - **Grafana with dashboards on each service**
 
-![ft_services_grafana_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_grafana_2.png)
+[![ft_services_grafana_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_grafana_2.png)](https://github.com/qingqingqingli/ft_services)
 
-![ft_services_grafana_3](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_grafana_3.png)
+[![ft_services_grafana_3](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_grafana_3.png)](https://github.com/qingqingqingli/ft_services)
 
 - **FTPS with SSL certificate**
 
-![ft_services_ftps_0](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_ftps_0.png)
+[![ft_services_ftps_0](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_ftps_0.png)](https://github.com/qingqingqingli/ft_services)
 
-![ft_services_ftps_1](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_ftps_1.png)
+[![ft_services_ftps_1](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_ftps_1.png)](https://github.com/qingqingqingli/ft_services)
