@@ -138,3 +138,13 @@ $ kubectl apply -f srcs/telegraf/telegraf.yml
 - **Wordpress**
 
 ![ft_services_wordpress](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_wordpress.png)
+
+- **PhpMyAdmin with wordpress database**
+
+![ft_services_pma_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_pma_2.png)
+
+- **Grafana with dashboards on each service**
+
+![ft_services_grafana_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_grafana_2.png)
+
+![ft_services_grafana_3](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_grafana_3.png)
