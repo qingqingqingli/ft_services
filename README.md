@@ -119,22 +119,22 @@ $ kubectl apply -f srcs/telegraf/telegraf.yml
 
 ## Examples
 
-- Output of ```kubectle get all```
+- **Output of ```kubectle get all```**
 
 ![ft_services_10](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_10.png)
 
-- Output of ```minikube dashboard```
+- **Output of ```minikube dashboard```**
 
 ![ft_services_8](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_8.png)
 
-- IP addresses of different services
+- **IP addresses of different services**
 
 ![ft_services_9](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_9.png)
 
-- Nginx
+- **Nginx**
 
 ![ft_services_nginx](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_nginx.png)
 
-- Wordpress
+- **Wordpress**
 
 ![ft_services_wordpress](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_wordpress.png)
