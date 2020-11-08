@@ -148,3 +148,9 @@ $ kubectl apply -f srcs/telegraf/telegraf.yml
 ![ft_services_grafana_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_grafana_2.png)
 
 ![ft_services_grafana_3](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_grafana_3.png)
+
+- **FTPS with SSL certificate**
+
+![ft_services_ftps_0](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_ftps_0.png)
+
+![ft_services_ftps_1](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_ftps_1.png)
