@@ -6,7 +6,6 @@
 ## Technical considerations
 
 - Must use Kubernetes
-
 - Set up a multi-service cluster that includes ```Nginx```, ```Wordpress```, ```PhpMyAdmin```, ```MySQL```, ```Grafana```, ```InfluxDB``` and ```FTPS```
 - Each service runs in a dedicated container
 - Containers are built using Alpine Linux
