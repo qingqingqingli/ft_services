@@ -127,7 +127,7 @@ $ kubectl apply -f srcs/telegraf/telegraf.yml
 
 [![ft_services_8](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_8.png)](https://github.com/qingqingqingli/ft_services)
 
-- **IP addresses of different services**
+- **```minikube dashboard``` also contains the IP addresses of different services**
 
 [![ft_services_9](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_9.png)](https://github.com/qingqingqingli/ft_services)
 
