@@ -127,7 +127,7 @@ $ kubectl apply -f srcs/telegraf/telegraf.yml
 
 [![ft_services_8](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_8.png)](https://github.com/qingqingqingli/ft_services)
 
-- **```minikube dashboard``` also contains the IP addresses of different services**
+- **```minikube dashboard``` also contains the IP address of different services**
 
 [![ft_services_9](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_9.png)](https://github.com/qingqingqingli/ft_services)
 
@@ -139,7 +139,7 @@ $ kubectl apply -f srcs/telegraf/telegraf.yml
 
 [![ft_services_wordpress](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_wordpress.png)](https://github.com/qingqingqingli/ft_services)
 
-- **PhpMyAdmin with wordpress database**
+- **PhpMyAdmin with Wordpress database**
 
 [![ft_services_pma_2](https://github.com/qingqingqingli/readme_images/blob/master/ft_services_pma_2.png)](https://github.com/qingqingqingli/ft_services)
 
