@@ -17,7 +17,7 @@
 > Step 1: Install Minikube
 
 ```shell
-# install homebrew 
+# Install homebrew 
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 # LINUX: Add Homebrew to your PATH and bash shell profile script
@@ -26,10 +26,10 @@ $ test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/br
 $ test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
 $ echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
 
-# install kubectl
+# Install kubectl
 $ brew install kubectl
 
-# install minikube
+# Install minikube
 $ brew install minikube
 ```
 
@@ -39,7 +39,7 @@ $ brew install minikube
 > Step 3: Start a Minikube instace
 
 ```shell
-# remove existing minikube instance
+# Remove existing minikube instance
 $ minikube delete
 
 # Start a new minikube instance
